@@ -21,6 +21,7 @@ class QuranApp extends ConsumerWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       routerConfig: router,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
