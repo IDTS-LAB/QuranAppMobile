@@ -1,8 +1,8 @@
-import '../../../../core/result/result.dart';
-import '../entities/ayah.dart';
-import '../entities/bookmark.dart';
-import '../entities/reading_position.dart';
-import '../entities/surah.dart';
+import 'package:quran_app/core/result/result.dart';
+import 'package:quran_app/features/quran/domain/entities/ayah.dart';
+import 'package:quran_app/features/quran/domain/entities/bookmark.dart';
+import 'package:quran_app/features/quran/domain/entities/reading_position.dart';
+import 'package:quran_app/features/quran/domain/entities/surah.dart';
 
 abstract interface class SurahRepository {
   Future<Result<List<Surah>>> getSurahs();

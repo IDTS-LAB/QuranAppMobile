@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/entities/ayah.dart';
+import 'package:quran_app/features/quran/domain/entities/ayah.dart';
 part 'ayah_dto.freezed.dart';
 part 'ayah_dto.g.dart';
 

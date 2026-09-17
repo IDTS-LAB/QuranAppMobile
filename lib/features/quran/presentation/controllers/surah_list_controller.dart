@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/result/result.dart';
-import '../providers/quran_providers.dart';
+import 'package:quran_app/core/result/result.dart';
+import 'package:quran_app/features/quran/presentation/providers/quran_providers.dart';
 import 'quran_views.dart';
 
 final class SurahListController extends AsyncNotifier<List<SurahView>> {

@@ -4,20 +4,20 @@ import 'package:quran_app/core/widgets/typography/app_section_label.dart';
 import 'package:quran_app/core/widgets/typography/adaptive_text.dart';
 import 'package:quran_app/core/widgets/typography/quran_text.dart';
 
-import '../../../app/theme/app_theme.dart';
-import '../../../app/theme/app_typography.dart';
-import '../../../app/theme/app_colors.dart';
-import '../../../app/theme/app_radius.dart';
-import '../../../app/theme/app_shadows.dart';
-import '../../../app/theme/app_spacing.dart';
-import '../widgets/buttons/app_floating_action_button.dart';
-import '../widgets/buttons/app_icon_button.dart';
-import '../widgets/buttons/app_primary_button.dart';
-import '../widgets/buttons/app_secondary_button.dart';
-import '../widgets/cards/app_card.dart';
-import '../widgets/indicators/app_badge.dart';
-import '../widgets/indicators/app_circular_progress.dart';
-import '../widgets/indicators/app_progress_bar.dart';
+import 'package:quran_app/app/theme/app_theme.dart';
+import 'package:quran_app/app/theme/app_typography.dart';
+import 'package:quran_app/app/theme/app_colors.dart';
+import 'package:quran_app/app/theme/app_radius.dart';
+import 'package:quran_app/app/theme/app_shadows.dart';
+import 'package:quran_app/app/theme/app_spacing.dart';
+import 'package:quran_app/core/widgets/buttons/app_floating_action_button.dart';
+import 'package:quran_app/core/widgets/buttons/app_icon_button.dart';
+import 'package:quran_app/core/widgets/buttons/app_primary_button.dart';
+import 'package:quran_app/core/widgets/buttons/app_secondary_button.dart';
+import 'package:quran_app/core/widgets/cards/app_card.dart';
+import 'package:quran_app/core/widgets/indicators/app_badge.dart';
+import 'package:quran_app/core/widgets/indicators/app_circular_progress.dart';
+import 'package:quran_app/core/widgets/indicators/app_progress_bar.dart';
 /// Noble Forest Design System Showcase Screen
 ///
 /// This screen visually demonstrates the complete Noble Forest system.

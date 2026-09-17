@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../../domain/entities/surah.dart';
+import 'package:quran_app/features/quran/domain/entities/surah.dart';
 part 'surah_dto.freezed.dart';
 part 'surah_dto.g.dart';
 

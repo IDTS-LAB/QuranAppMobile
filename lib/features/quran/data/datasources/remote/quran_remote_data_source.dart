@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../../../../core/constants/app_constants.dart';
+import 'package:quran_app/core/constants/app_constants.dart';
 
 abstract interface class QuranRemoteDataSource {
   Future<List<Map<String, Object?>>> fetchSurahs();

@@ -1,5 +1,5 @@
-import '../../../../../core/database/app_database.dart';
-import '../../../../../core/database/daos/quran_dao.dart';
+import 'package:quran_app/core/database/app_database.dart';
+import 'package:quran_app/core/database/daos/quran_dao.dart';
 
 final class QuranLocalDataSource {
   QuranLocalDataSource(this._dao);

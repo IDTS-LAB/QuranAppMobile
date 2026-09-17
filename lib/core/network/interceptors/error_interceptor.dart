@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../../errors/app_exception.dart';
+import 'package:quran_app/core/errors/app_exception.dart';
 
 AppException mapDioError(DioException e) {
   switch (e.type) {

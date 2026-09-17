@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../constants/app_constants.dart';
+import 'package:quran_app/core/constants/app_constants.dart';
 import 'interceptors/error_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
 import 'interceptors/request_id_interceptor.dart';

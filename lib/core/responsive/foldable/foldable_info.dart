@@ -2,7 +2,7 @@ import 'dart:ui' show DisplayFeature, DisplayFeatureType;
 
 import 'package:flutter/material.dart';
 
-import '../breakpoints.dart';
+import 'package:quran_app/core/responsive/breakpoints.dart';
 
 /// Foldable posture derived from display features.
 ///

@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quran_app/features/home/presentation/pages/home_page.dart';
 
-import '../../../features/quran/presentation/pages/bookmarks_page.dart';
-import '../../../features/quran/presentation/pages/search_page.dart';
-import '../../../features/quran/presentation/pages/surah_detail_page.dart';
-import '../../../features/quran/presentation/pages/surah_list_page.dart';
+import 'package:quran_app/features/quran/presentation/pages/bookmarks_page.dart';
+import 'package:quran_app/features/quran/presentation/pages/search_page.dart';
+import 'package:quran_app/features/quran/presentation/pages/surah_detail_page.dart';
+import 'package:quran_app/features/quran/presentation/pages/surah_list_page.dart';
 import 'adaptive_scaffold.dart';
 import 'route_guards.dart';
 import 'route_names.dart';
@@ -27,18 +29,53 @@ abstract final class AppRouter {
             StatefulShellBranch(
               routes: <RouteBase>[
                 GoRoute(
+                  path: RouteNames.home,
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const HomePage(),
+                    transitionsBuilder: (
+                      context,
+                      animation,
+                      secondaryAnimation,
+                      child,
+                    ) => FadeTransition(opacity: animation, child: child),
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
                   path: RouteNames.surahs,
-                  builder: (context, state) => const SurahListPage(),
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const SurahListPage(),
+                    transitionsBuilder: (
+                      context,
+                      animation,
+                      secondaryAnimation,
+                      child,
+                    ) => FadeTransition(opacity: animation, child: child),
+                  ),
                   routes: <RouteBase>[
                     GoRoute(
                       path: ':surahNumber',
-                      builder: (context, state) {
-                        final String raw =
-                            state.pathParameters['surahNumber'] ?? '1';
-                        return SurahDetailPage(
-                          surahNumber: int.tryParse(raw) ?? 1,
-                        );
-                      },
+                      pageBuilder: (context, state) => CustomTransitionPage(
+                        key: state.pageKey,
+                        child: SurahDetailPage(
+                          surahNumber:
+                              int.tryParse(
+                                state.pathParameters['surahNumber'] ?? '1',
+                              ) ??
+                              1,
+                        ),
+                        transitionsBuilder: (
+                          context,
+                          animation,
+                          secondaryAnimation,
+                          child,
+                        ) => FadeTransition(opacity: animation, child: child),
+                      ),
                     ),
                   ],
                 ),
@@ -48,7 +85,16 @@ abstract final class AppRouter {
               routes: <RouteBase>[
                 GoRoute(
                   path: RouteNames.search,
-                  builder: (context, state) => const SearchPage(),
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const SearchPage(),
+                    transitionsBuilder: (
+                      context,
+                      animation,
+                      secondaryAnimation,
+                      child,
+                    ) => FadeTransition(opacity: animation, child: child),
+                  ),
                 ),
               ],
             ),
@@ -56,7 +102,16 @@ abstract final class AppRouter {
               routes: <RouteBase>[
                 GoRoute(
                   path: RouteNames.bookmarks,
-                  builder: (context, state) => const BookmarksPage(),
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const BookmarksPage(),
+                    transitionsBuilder: (
+                      context,
+                      animation,
+                      secondaryAnimation,
+                      child,
+                    ) => FadeTransition(opacity: animation, child: child),
+                  ),
                 ),
               ],
             ),

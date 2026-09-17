@@ -101,9 +101,10 @@ class _SearchResults extends ConsumerWidget {
         error: error,
         onRetry: () => ref.invalidate(searchResultsProvider(query)),
       ),
-      AsyncData(value: final ayahs) => ayahs.isEmpty
-          ? const AppEmptyView(message: 'No results found')
-          : _ResultsList(query: query, ayahs: ayahs),
+      AsyncData(value: final ayahs) =>
+        ayahs.isEmpty
+            ? const AppEmptyView(message: 'No results found')
+            : _ResultsList(query: query, ayahs: ayahs),
     };
   }
 }

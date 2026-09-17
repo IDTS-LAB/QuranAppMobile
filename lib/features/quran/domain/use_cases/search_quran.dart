@@ -1,7 +1,7 @@
-import '../../../../core/errors/app_exception.dart';
-import '../../../../core/result/result.dart';
-import '../entities/ayah.dart';
-import '../repositories/surah_repository.dart';
+import 'package:quran_app/core/errors/app_exception.dart';
+import 'package:quran_app/core/result/result.dart';
+import 'package:quran_app/features/quran/domain/entities/ayah.dart';
+import 'package:quran_app/features/quran/domain/repositories/surah_repository.dart';
 
 final class SearchQuran {
   SearchQuran(this._repo);

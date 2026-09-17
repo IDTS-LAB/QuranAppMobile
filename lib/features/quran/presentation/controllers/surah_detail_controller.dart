@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/errors/app_exception.dart';
-import '../../../../core/result/result.dart';
-import '../../domain/entities/ayah.dart';
-import '../../domain/entities/surah.dart';
-import '../providers/quran_providers.dart';
+import 'package:quran_app/core/errors/app_exception.dart';
+import 'package:quran_app/core/result/result.dart';
+import 'package:quran_app/features/quran/domain/entities/ayah.dart';
+import 'package:quran_app/features/quran/domain/entities/surah.dart';
+import 'package:quran_app/features/quran/presentation/providers/quran_providers.dart';
 import 'quran_views.dart';
 
 final class SurahDetailController extends AsyncNotifier<SurahDetailView> {

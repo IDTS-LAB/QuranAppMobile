@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_spacing.dart';
-import '../../../../app/theme/app_typography.dart';
-import '../../../../core/widgets/cards/app_card.dart';
-import '../../domain/entities/surah.dart';
+import 'package:quran_app/app/theme/app_colors.dart';
+import 'package:quran_app/app/theme/app_spacing.dart';
+import 'package:quran_app/app/theme/app_typography.dart';
+import 'package:quran_app/core/widgets/cards/app_card.dart';
+import 'package:quran_app/features/quran/domain/entities/surah.dart';
 
 /// List card for a single surah.
 ///

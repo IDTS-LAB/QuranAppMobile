@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quran_app/app/theme/app_radius.dart';
 
-import '../../../../app/theme/app_colors.dart';
+import 'package:quran_app/app/theme/app_colors.dart';
 
 /// Noble Forest - Premium Quranic UI Icon Button Component
 class AppIconButton extends StatelessWidget {

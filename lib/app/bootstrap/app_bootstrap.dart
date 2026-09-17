@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../../core/database/app_database.dart';
-import '../../../features/quran/data/datasources/local/quran_local_data_source.dart';
+import 'package:quran_app/core/database/app_database.dart';
+import 'package:quran_app/features/quran/data/datasources/local/quran_local_data_source.dart';
 
 /// One-time startup work: ensures bindings exist and seeds the Drift
 /// database from `assets/quran/surahs.json` on first launch.

@@ -1,23 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/database/app_database.dart';
-import '../../../../core/network/dio_client.dart';
-import '../../../../core/result/result.dart';
-import '../../data/datasources/local/quran_local_data_source.dart';
-import '../../data/datasources/remote/quran_remote_data_source.dart';
-import '../../data/repositories/surah_repository_impl.dart';
-import '../../domain/entities/ayah.dart';
-import '../../domain/entities/reading_position.dart';
-import '../../domain/repositories/surah_repository.dart';
-import '../../domain/use_cases/get_surah_detail.dart';
-import '../../domain/use_cases/get_surahs.dart';
-import '../../domain/use_cases/search_quran.dart';
-import '../../domain/use_cases/toggle_bookmark.dart';
-import '../controllers/bookmarks_controller.dart';
-import '../controllers/quran_views.dart';
-import '../controllers/surah_detail_controller.dart';
-import '../controllers/surah_list_controller.dart';
+import 'package:quran_app/core/database/app_database.dart';
+import 'package:quran_app/core/network/dio_client.dart';
+import 'package:quran_app/core/result/result.dart';
+import 'package:quran_app/features/quran/data/datasources/local/quran_local_data_source.dart';
+import 'package:quran_app/features/quran/data/datasources/remote/quran_remote_data_source.dart';
+import 'package:quran_app/features/quran/data/repositories/surah_repository_impl.dart';
+import 'package:quran_app/features/quran/domain/entities/ayah.dart';
+import 'package:quran_app/features/quran/domain/entities/reading_position.dart';
+import 'package:quran_app/features/quran/domain/repositories/surah_repository.dart';
+import 'package:quran_app/features/quran/domain/use_cases/get_surah_detail.dart';
+import 'package:quran_app/features/quran/domain/use_cases/get_surahs.dart';
+import 'package:quran_app/features/quran/domain/use_cases/search_quran.dart';
+import 'package:quran_app/features/quran/domain/use_cases/toggle_bookmark.dart';
+import 'package:quran_app/features/quran/presentation/controllers/bookmarks_controller.dart';
+import 'package:quran_app/features/quran/presentation/controllers/quran_views.dart';
+import 'package:quran_app/features/quran/presentation/controllers/surah_detail_controller.dart';
+import 'package:quran_app/features/quran/presentation/controllers/surah_list_controller.dart';
 
 final dioProvider = Provider<Dio>((ref) => DioClient.create());
 

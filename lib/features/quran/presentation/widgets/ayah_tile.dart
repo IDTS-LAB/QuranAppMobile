@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quran_app/core/widgets/typography/quran_text.dart';
 
-import '../../../../app/theme/app_spacing.dart';
-import '../../../../core/widgets/cards/app_card.dart';
-import '../../../../core/widgets/buttons/app_icon_button.dart';
-import '../../domain/entities/ayah.dart';
+import 'package:quran_app/app/theme/app_spacing.dart';
+import 'package:quran_app/core/widgets/cards/app_card.dart';
+import 'package:quran_app/core/widgets/buttons/app_icon_button.dart';
+import 'package:quran_app/features/quran/domain/entities/ayah.dart';
 
 /// Tile for a single ayah.
 ///

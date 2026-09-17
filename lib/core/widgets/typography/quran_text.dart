@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../app/theme/app_colors.dart';
+import 'package:quran_app/app/theme/app_colors.dart';
 
 /// Noble Forest - Quran Text Size Enum
 enum QuranTextSize { large, medium, small }

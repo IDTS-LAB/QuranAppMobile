@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/reading_position.dart';
+import 'package:quran_app/features/quran/domain/entities/reading_position.dart';
 
 /// Banner that resumes reading at a saved [position].
 ///

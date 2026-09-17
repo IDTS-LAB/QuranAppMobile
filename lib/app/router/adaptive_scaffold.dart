@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../core/responsive/breakpoints.dart';
-import '../../../core/responsive/foldable/foldable_info.dart';
+import 'package:quran_app/core/responsive/breakpoints.dart';
+import 'package:quran_app/core/responsive/foldable/foldable_info.dart';
+import 'package:quran_app/app/theme/app_colors.dart';
 import 'route_names.dart';
 
 /// Single destination entry mapping a shell branch to its tab UI.
@@ -14,8 +16,8 @@ class _Destination {
   });
 
   final String label;
-  final IconData icon;
-  final IconData selectedIcon;
+  final FaIcon icon;
+  final FaIcon selectedIcon;
 }
 
 /// App shell with adaptive navigation.
@@ -31,24 +33,29 @@ class AdaptiveScaffold extends StatelessWidget {
 
   static const List<_Destination> _destinations = <_Destination>[
     _Destination(
-      label: 'Surahs',
-      icon: Icons.menu_book_outlined,
-      selectedIcon: Icons.menu_book,
+      label: 'Home',
+      icon: FaIcon(FontAwesomeIcons.house),
+      selectedIcon: FaIcon(FontAwesomeIcons.house),
     ),
     _Destination(
-      label: 'Search',
-      icon: Icons.search_outlined,
-      selectedIcon: Icons.search,
+      label: 'Quran',
+      icon: FaIcon(FontAwesomeIcons.bookQuran),
+      selectedIcon: FaIcon(FontAwesomeIcons.bookQuran),
     ),
     _Destination(
-      label: 'Bookmarks',
-      icon: Icons.bookmark_outline,
-      selectedIcon: Icons.bookmark,
+      label: 'Hifz',
+      icon: FaIcon(FontAwesomeIcons.heartPulse),
+      selectedIcon: FaIcon(FontAwesomeIcons.heartPulse),
     ),
     _Destination(
-      label: 'System',
-      icon: Icons.bookmark_outline,
-      selectedIcon: Icons.bookmark,
+      label: 'Listen',
+      icon: FaIcon(FontAwesomeIcons.headphones),
+      selectedIcon: FaIcon(FontAwesomeIcons.headphones),
+    ),
+    _Destination(
+      label: 'More',
+      icon: FaIcon(FontAwesomeIcons.ellipsis),
+      selectedIcon: FaIcon(FontAwesomeIcons.ellipsis),
     ),
   ];
 
@@ -94,17 +101,40 @@ class _CompactShell extends StatelessWidget {
     final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
     return Scaffold(
       body: child,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: onSelect,
-        destinations: <Widget>[
-          for (final _Destination destination in AdaptiveScaffold._destinations)
-            NavigationDestination(
-              icon: Icon(destination.icon),
-              selectedIcon: Icon(destination.selectedIcon),
-              label: destination.label,
-            ),
-        ],
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((
+            Set<WidgetState> states,
+          ) {
+            if (states.contains(WidgetState.selected)) {
+              return IconThemeData(color: AppColors.nobleGreen);
+            }
+            return IconThemeData(color: AppColors.disabled);
+          }),
+          labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((
+            Set<WidgetState> states,
+          ) {
+            if (states.contains(WidgetState.selected)) {
+              return TextStyle(color: AppColors.nobleGreen);
+            }
+            return TextStyle(color: AppColors.disabled);
+          }),
+          indicatorColor: Colors.transparent,
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+        ),
+        child: NavigationBar(
+          selectedIndex: selectedIndex,
+          onDestinationSelected: onSelect,
+          destinations: <Widget>[
+            for (final _Destination destination
+                in AdaptiveScaffold._destinations)
+              NavigationDestination(
+                icon: destination.icon,
+                selectedIcon: destination.selectedIcon,
+                label: destination.label,
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -124,19 +154,30 @@ class _MediumShell extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: <Widget>[
-          NavigationRail(
-            selectedIndex: selectedIndex,
-            onDestinationSelected: onSelect,
-            labelType: NavigationRailLabelType.all,
-            destinations: <NavigationRailDestination>[
-              for (final _Destination destination
-                  in AdaptiveScaffold._destinations)
-                NavigationRailDestination(
-                  icon: Icon(destination.icon),
-                  selectedIcon: Icon(destination.selectedIcon),
-                  label: Text(destination.label),
-                ),
-            ],
+          Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: Theme.of(context).colorScheme
+                  .copyWith(primary: Colors.transparent),
+            ),
+            child: NavigationRail(
+              selectedIndex: selectedIndex,
+              onDestinationSelected: onSelect,
+              labelType: NavigationRailLabelType.all,
+              selectedIconTheme: IconThemeData(color: AppColors.nobleGreen),
+              unselectedIconTheme: IconThemeData(color: AppColors.disabled),
+              selectedLabelTextStyle: TextStyle(color: AppColors.nobleGreen),
+              unselectedLabelTextStyle: TextStyle(color: AppColors.disabled),
+              useIndicator: false,
+              destinations: <NavigationRailDestination>[
+                for (final _Destination destination
+                    in AdaptiveScaffold._destinations)
+                  NavigationRailDestination(
+                    icon: destination.icon,
+                    selectedIcon: destination.selectedIcon,
+                    label: Text(destination.label),
+                  ),
+              ],
+            ),
           ),
           const VerticalDivider(width: 1),
           Expanded(child: child),
@@ -165,20 +206,31 @@ class _ExpandedShell extends StatelessWidget {
     return Scaffold(
       body: Row(
         children: <Widget>[
-          NavigationRail(
-            selectedIndex: selectedIndex,
-            onDestinationSelected: onSelect,
-            extended: true,
-            minExtendedWidth: 280,
-            destinations: <NavigationRailDestination>[
-              for (final _Destination destination
-                  in AdaptiveScaffold._destinations)
-                NavigationRailDestination(
-                  icon: Icon(destination.icon),
-                  selectedIcon: Icon(destination.selectedIcon),
-                  label: Text(destination.label),
-                ),
-            ],
+          Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: Theme.of(context).colorScheme
+                  .copyWith(primary: Colors.transparent),
+            ),
+            child: NavigationRail(
+              selectedIndex: selectedIndex,
+              onDestinationSelected: onSelect,
+              extended: true,
+              minExtendedWidth: 280,
+              selectedIconTheme: IconThemeData(color: AppColors.nobleGreen),
+              unselectedIconTheme: IconThemeData(color: AppColors.disabled),
+              selectedLabelTextStyle: TextStyle(color: AppColors.nobleGreen),
+              unselectedLabelTextStyle: TextStyle(color: AppColors.disabled),
+              useIndicator: false,
+              destinations: <NavigationRailDestination>[
+                for (final _Destination destination
+                    in AdaptiveScaffold._destinations)
+                  NavigationRailDestination(
+                    icon: destination.icon,
+                    selectedIcon: destination.selectedIcon,
+                    label: Text(destination.label),
+                  ),
+              ],
+            ),
           ),
           const VerticalDivider(width: 1),
           // Keeps content clear of a vertical hinge on dual-screen devices.

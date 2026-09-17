@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../app/theme/app_spacing.dart';
-import '../../../../core/widgets/empty/app_empty_view.dart';
-import '../../../../core/widgets/error/app_error_view.dart';
-import '../../../../core/widgets/loading/app_loading.dart';
-import '../../domain/entities/ayah.dart';
-import '../controllers/quran_views.dart';
-import '../providers/quran_providers.dart';
+import 'package:quran_app/app/theme/app_spacing.dart';
+import 'package:quran_app/core/widgets/empty/app_empty_view.dart';
+import 'package:quran_app/core/widgets/error/app_error_view.dart';
+import 'package:quran_app/core/widgets/loading/app_loading.dart';
+import 'package:quran_app/features/quran/domain/entities/ayah.dart';
+import 'package:quran_app/features/quran/presentation/controllers/quran_views.dart';
+import 'package:quran_app/features/quran/presentation/providers/quran_providers.dart';
 import 'ayah_tile.dart';
 import 'resume_banner.dart';
 
@@ -25,8 +25,7 @@ class SurahDetailContent extends ConsumerStatefulWidget {
   final int surahNumber;
 
   @override
-  ConsumerState<SurahDetailContent> createState() =>
-      _SurahDetailContentState();
+  ConsumerState<SurahDetailContent> createState() => _SurahDetailContentState();
 }
 
 class _SurahDetailContentState extends ConsumerState<SurahDetailContent> {
@@ -54,8 +53,7 @@ class _SurahDetailContentState extends ConsumerState<SurahDetailContent> {
   }
 
   void _scrollToAyah(int ayahNumber) {
-    final BuildContext? target =
-        _ayahKeys[ayahNumber]?.currentContext;
+    final BuildContext? target = _ayahKeys[ayahNumber]?.currentContext;
     if (target != null) {
       Scrollable.ensureVisible(
         target,
@@ -74,9 +72,7 @@ class _SurahDetailContentState extends ConsumerState<SurahDetailContent> {
       AsyncError(:final error) => AppErrorView.fromError(
         error: error,
         onRetry: () => ref
-            .read(
-              surahDetailControllerProvider(widget.surahNumber).notifier,
-            )
+            .read(surahDetailControllerProvider(widget.surahNumber).notifier)
             .refresh(),
       ),
       AsyncData(value: final view) => _DetailSuccess(
@@ -121,9 +117,7 @@ class _DetailSuccess extends ConsumerWidget {
       },
       _ => <String>{},
     };
-    final position = ref.watch(
-      readingPositionProvider(view.surah.number),
-    );
+    final position = ref.watch(readingPositionProvider(view.surah.number));
     return Column(
       children: <Widget>[
         position.when(
@@ -145,8 +139,7 @@ class _DetailSuccess extends ConsumerWidget {
             itemCount: view.ayahs.length,
             itemBuilder: (context, index) {
               final Ayah ayah = view.ayahs[index];
-              final String key =
-                  '${ayah.surahNumber}:${ayah.numberInSurah}';
+              final String key = '${ayah.surahNumber}:${ayah.numberInSurah}';
               return Container(
                 key: keyFor(ayah.numberInSurah),
                 child: AyahTile(

@@ -44,6 +44,7 @@ class _SurahListPageState extends ConsumerState<SurahListPage> {
     final AsyncValue<List<SurahView>> surahs = ref.watch(
       surahListControllerProvider,
     );
+
     return Scaffold(
       appBar: AppBar(title: const Text('Surahs')),
       body: switch (surahs) {
