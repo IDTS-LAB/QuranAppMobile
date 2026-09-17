@@ -57,7 +57,7 @@ class AdaptiveScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int selectedIndex = RouteNames.locationToIndex(
-      GoRouterState.of(context).uri.toString(),
+      GoRouterState.of(context).uri.path,
     );
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -107,8 +107,7 @@ class _CompactShell extends StatelessWidget {
         selectedIndex: selectedIndex,
         onDestinationSelected: onSelect,
         destinations: <Widget>[
-          for (final _Destination destination
-              in AdaptiveScaffold._destinations)
+          for (final _Destination destination in AdaptiveScaffold._destinations)
             NavigationDestination(
               icon: Icon(destination.icon),
               selectedIcon: Icon(destination.selectedIcon),
