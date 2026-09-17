@@ -56,16 +56,12 @@ class AdaptiveScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int selectedIndex = RouteNames.locationToIndex(
-      GoRouterState.of(context).uri.path,
-    );
     return LayoutBuilder(
       builder: (context, constraints) {
         final FoldableInfo foldable = FoldableInfo.fromContext(context);
         final double width = constraints.maxWidth;
         if (Breakpoints.isExpanded(width) || foldable.isDualScreen) {
           return _ExpandedShell(
-            selectedIndex: selectedIndex,
             onSelect: _goToBranch,
             hingeWidth: foldable.hingeBounds?.width ?? 0,
             child: navigationShell,
@@ -73,13 +69,11 @@ class AdaptiveScaffold extends StatelessWidget {
         }
         if (Breakpoints.isMedium(width)) {
           return _MediumShell(
-            selectedIndex: selectedIndex,
             onSelect: _goToBranch,
             child: navigationShell,
           );
         }
         return _CompactShell(
-          selectedIndex: selectedIndex,
           onSelect: _goToBranch,
           child: navigationShell,
         );
@@ -90,17 +84,18 @@ class AdaptiveScaffold extends StatelessWidget {
 
 class _CompactShell extends StatelessWidget {
   const _CompactShell({
-    required this.selectedIndex,
     required this.onSelect,
     required this.child,
   });
 
-  final int selectedIndex;
   final ValueChanged<int> onSelect;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    // Get selected index directly from the navigation shell for more reliable
+    // state tracking across device modes and orientations
+    final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
     return Scaffold(
       body: child,
       bottomNavigationBar: NavigationBar(
@@ -121,17 +116,18 @@ class _CompactShell extends StatelessWidget {
 
 class _MediumShell extends StatelessWidget {
   const _MediumShell({
-    required this.selectedIndex,
     required this.onSelect,
     required this.child,
   });
 
-  final int selectedIndex;
   final ValueChanged<int> onSelect;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    // Get selected index directly from the navigation shell for more reliable
+    // state tracking across device modes and orientations
+    final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
     return Scaffold(
       body: Row(
         children: <Widget>[
@@ -159,19 +155,20 @@ class _MediumShell extends StatelessWidget {
 
 class _ExpandedShell extends StatelessWidget {
   const _ExpandedShell({
-    required this.selectedIndex,
     required this.onSelect,
     required this.hingeWidth,
     required this.child,
   });
 
-  final int selectedIndex;
   final ValueChanged<int> onSelect;
   final double hingeWidth;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    // Get selected index directly from the navigation shell for more reliable
+    // state tracking across device modes and orientations
+    final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
     return Scaffold(
       body: Row(
         children: <Widget>[
