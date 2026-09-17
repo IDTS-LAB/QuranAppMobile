@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:quran_app/core/widgets/typography/quran_text.dart';
 
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/widgets/cards/app_card.dart';
+import '../../../../core/widgets/buttons/app_icon_button.dart';
 import '../../domain/entities/ayah.dart';
 
 /// Tile for a single ayah.
@@ -44,36 +47,31 @@ class _AyahTileState extends State<AyahTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return AppCard(
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: EdgeInsets.all(AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text(
-              widget.ayah.arabicText,
-              style: AppTypography.arabic,
-              textDirection: TextDirection.rtl,
+            QuranText(
+              text: widget.ayah.arabicText,
+              style: AppTypography.arabicMedium,
               textAlign: TextAlign.right,
             ),
             if (widget.ayah.translation != null) ...<Widget>[
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Text(widget.ayah.translation ?? ''),
             ],
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Row(
               children: <Widget>[
                 Text('Ayah ${widget.ayah.numberInSurah}'),
                 const Spacer(),
-                IconButton(
+                AppIconButton(
                   icon: Icon(
-                    widget.bookmarked
-                        ? Icons.bookmark
-                        : Icons.bookmark_outline,
+                    widget.bookmarked ? Icons.bookmark : Icons.bookmark_outline,
                   ),
-                  tooltip: widget.bookmarked
-                      ? 'Remove bookmark'
-                      : 'Bookmark',
+                  tooltip: widget.bookmarked ? 'Remove bookmark' : 'Bookmark',
                   onPressed: widget.onBookmark,
                 ),
               ],

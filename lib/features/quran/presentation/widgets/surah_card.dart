@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_typography.dart';
+import '../../../../core/widgets/cards/app_card.dart';
 import '../../domain/entities/surah.dart';
 
 /// List card for a single surah.
@@ -22,7 +23,7 @@ class SurahCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return AppCard(
       child: ListTile(
         onTap: onTap,
         selected: selected,
@@ -32,10 +33,10 @@ class SurahCard extends StatelessWidget {
           '${surah.englishMeaning} · ${surah.ayahCount} ayahs',
         ),
         trailing: Padding(
-          padding: const EdgeInsets.only(left: AppSpacing.sm),
+          padding: EdgeInsets.only(left: AppSpacing.sm),
           child: Text(
             surah.arabicName,
-            style: AppTypography.arabic,
+            style: AppTypography.arabicSmall,
             textDirection: TextDirection.rtl,
           ),
         ),
