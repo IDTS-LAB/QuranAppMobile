@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../core/widgets/cards/app_card.dart';
@@ -24,20 +25,23 @@ class SurahCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCard(
-      child: ListTile(
+      padding: EdgeInsets.all(AppSpacing.sm),
+      child: InkWell(
         onTap: onTap,
-        selected: selected,
-        leading: CircleAvatar(child: Text('${surah.number}')),
-        title: Text(surah.englishName),
-        subtitle: Text(
-          '${surah.englishMeaning} · ${surah.ayahCount} ayahs',
-        ),
-        trailing: Padding(
-          padding: EdgeInsets.only(left: AppSpacing.sm),
-          child: Text(
-            surah.arabicName,
-            style: AppTypography.arabicSmall,
-            textDirection: TextDirection.rtl,
+        splashColor: AppColors.nobleGreen.withValues(alpha: 0.2),
+        child: ListTile(
+          onTap: null,
+          selected: selected,
+          leading: CircleAvatar(child: Text('${surah.number}')),
+          title: Text(surah.englishName),
+          subtitle: Text('${surah.englishMeaning} · ${surah.ayahCount} ayahs'),
+          trailing: Padding(
+            padding: EdgeInsets.only(left: AppSpacing.sm),
+            child: Text(
+              surah.arabicName,
+              style: AppTypography.arabicSmall,
+              textDirection: TextDirection.rtl,
+            ),
           ),
         ),
       ),
