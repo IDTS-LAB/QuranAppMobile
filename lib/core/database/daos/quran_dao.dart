@@ -5,9 +5,7 @@ import '../tables/quran_tables.dart';
 
 part 'quran_dao.g.dart';
 
-@DriftAccessor(
-  tables: [SurahRows, AyahRows, BookmarkRows, ReadingPositionRows],
-)
+@DriftAccessor(tables: [SurahRows, AyahRows, BookmarkRows, ReadingPositionRows])
 class QuranDao extends DatabaseAccessor<AppDatabase> with _$QuranDaoMixin {
   QuranDao(super.db);
 
@@ -40,10 +38,9 @@ class QuranDao extends DatabaseAccessor<AppDatabase> with _$QuranDaoMixin {
 
   Future<List<AyahRow>> searchAyahs(String q) {
     final like = '%$q%';
-    return (select(ayahRows)..where(
-          (t) => t.arabicText.like(like) | t.translation.like(like),
-        ))
-        .get();
+    return (select(
+      ayahRows,
+    )..where((t) => t.arabicText.like(like) | t.translation.like(like))).get();
   }
 
   Future<List<BookmarkRow>> getBookmarks() => select(bookmarkRows).get();
@@ -79,7 +76,7 @@ class QuranDao extends DatabaseAccessor<AppDatabase> with _$QuranDaoMixin {
         ),
       );
 
-  Future<ReadingPositionRow?> getReadingPosition(int surah) =>
-      (select(readingPositionRows)
-        ..where((t) => t.surahNumber.equals(surah))).getSingleOrNull();
+  Future<ReadingPositionRow?> getReadingPosition(int surah) => (select(
+    readingPositionRows,
+  )..where((t) => t.surahNumber.equals(surah))).getSingleOrNull();
 }

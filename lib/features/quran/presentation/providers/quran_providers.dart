@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/database/app_database.dart';
 import '../../../../core/network/dio_client.dart';
+import '../../../../core/result/result.dart';
 import '../../data/datasources/local/quran_local_data_source.dart';
 import '../../data/datasources/remote/quran_remote_data_source.dart';
 import '../../data/repositories/surah_repository_impl.dart';
+import '../../domain/entities/ayah.dart';
+import '../../domain/entities/reading_position.dart';
 import '../../domain/repositories/surah_repository.dart';
 import '../../domain/use_cases/get_surah_detail.dart';
 import '../../domain/use_cases/get_surahs.dart';
@@ -68,3 +71,30 @@ final bookmarksControllerProvider =
       BookmarksController.new,
       retry: (_, _) => null,
     );
+
+/// Search results for a validated [query] (2+ chars enforced by
+/// [SearchQuran]). Failures surface as [AsyncError] for pages to render.
+final searchResultsProvider =
+    FutureProvider.autoDispose.family<List<Ayah>, String>((ref, query) async {
+      final result = await ref.watch(searchQuranProvider).call(query);
+      return switch (result) {
+        Success(value: final ayahs) => ayahs,
+        Failure(error: final error) => throw error,
+      };
+    });
+
+/// Saved reading position for [surahNumber], or `null` when none exists
+/// or loading fails (the resume banner simply stays hidden).
+final readingPositionProvider =
+    FutureProvider.autoDispose.family<ReadingPosition?, int>((
+      ref,
+      surahNumber,
+    ) async {
+      final result = await ref
+          .watch(surahRepositoryProvider)
+          .getReadingPosition(surahNumber);
+      return switch (result) {
+        Success(value: final position) => position,
+        Failure() => null,
+      };
+    });

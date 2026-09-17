@@ -2,6 +2,8 @@ import 'dart:ui' show DisplayFeature, DisplayFeatureType;
 
 import 'package:flutter/material.dart';
 
+import '../breakpoints.dart';
+
 /// Foldable posture derived from display features.
 ///
 /// The exact hinge angle requires a platform sensor plugin (follow-up);
@@ -52,7 +54,7 @@ class FoldableInfo {
       return FoldableInfo(
         hasHinge: false,
         isDualScreen: false,
-        posture: width < 600 ? FoldablePosture.folded : FoldablePosture.unknown,
+        posture: width < Breakpoints.compactMaxWidth ? FoldablePosture.folded : FoldablePosture.unknown,
       );
     }
     final Size size = MediaQuery.of(context).size;

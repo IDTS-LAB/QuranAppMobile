@@ -199,17 +199,17 @@ sealed class AppException implements Exception {
   @override
   String toString() => '$runtimeType: $message';
 }
-class NetworkException extends AppException { const NetworkException(super.m); }
-class UnauthorizedException extends AppException { const UnauthorizedException(super.m); }
-class ForbiddenException extends AppException { const ForbiddenException(super.m); }
-class NotFoundException extends AppException { const NotFoundException(super.m); }
-class ValidationException extends AppException { const ValidationException(super.m); }
-class ServerException extends AppException { const ServerException(super.m); }
-class TimeoutException extends AppException { const TimeoutException(super.m); }
-class ConnectionException extends AppException { const ConnectionException(super.m); }
-class DatabaseException extends AppException { const DatabaseException(super.m); }
-class CacheException extends AppException { const CacheException(super.m); }
-class UnknownException extends AppException { const UnknownException(super.m); }
+class NetworkException extends AppException { const NetworkException(super.message); }
+class UnauthorizedException extends AppException { const UnauthorizedException(super.message); }
+class ForbiddenException extends AppException { const ForbiddenException(super.message); }
+class NotFoundException extends AppException { const NotFoundException(super.message); }
+class ValidationException extends AppException { const ValidationException(super.message); }
+class ServerException extends AppException { const ServerException(super.message); }
+class TimeoutException extends AppException { const TimeoutException(super.message); }
+class ConnectionException extends AppException { const ConnectionException(super.message); }
+class DatabaseException extends AppException { const DatabaseException(super.message); }
+class CacheException extends AppException { const CacheException(super.message); }
+class UnknownException extends AppException { const UnknownException(super.message); }
 ```
 
 ```dart
@@ -219,9 +219,9 @@ sealed class Result<T> {
   const Result();
   const factory Result.success(T value) = Success<T>;
   const factory Result.failure(AppException error) = Failure<T>;
-  R map<R>(R Function(T) f) => switch (this) {
-    Success(:final value) => f(value),
-    Failure(:final error) => throw error,
+  Result<R> map<R>(R Function(T) f) => switch (this) {
+    Success(:final value) => Result.success(f(value)),
+    Failure(:final error) => Result.failure(error),
   };
   AppException? exceptionOrNull() => switch (this) {
     Success() => null,
