@@ -1,0 +1,14 @@
+import 'package:flutter/material.dart';
+
+/// Minimal placeholder for Task 11: bookmarks page.
+class BookmarksPage extends StatelessWidget {
+  const BookmarksPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Bookmarks')),
+      body: const Center(child: Text('Bookmarks')),
+    );
+  }
+}
