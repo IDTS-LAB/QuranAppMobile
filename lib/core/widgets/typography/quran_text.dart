@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../app/theme/app_colors.dart';
 
+/// Noble Forest - Quran Text Size Enum
+enum QuranTextSize { large, medium, small }
+
 /// Noble Forest - Premium Quranic UI Quran Text Component
 ///
 /// Properties:
@@ -14,6 +17,7 @@ import '../../../../app/theme/app_colors.dart';
 /// - color
 /// - maxLines
 /// - overflow
+/// - size (for adaptive sizing when fontSize is not specified)
 ///
 /// Support:
 /// - RTL
@@ -34,6 +38,7 @@ class QuranText extends StatelessWidget {
     this.color,
     this.maxLines,
     this.overflow,
+    this.size = QuranTextSize.medium,
   });
 
   final String text;
@@ -45,29 +50,61 @@ class QuranText extends StatelessWidget {
   final Color? color;
   final int? maxLines;
   final TextOverflow? overflow;
+  final QuranTextSize size;
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle effectiveStyle =
-        style ??
-        TextStyle(
-          fontSize: fontSize,
-          height: lineHeight,
-          color: color ?? AppColors.textPrimary,
-        );
+    // Determine base style from provided style or default
+    final TextStyle baseStyle = style ?? TextStyle();
+
+    // Determine base font size for calculation
+    double baseFontSize;
+    if (fontSize != null) {
+      // Explicit font size provided - use as-is (non-adaptive)
+      baseFontSize = fontSize!;
+    } else if (baseStyle.fontSize != null) {
+      // Font size provided in style - use as-is (non-adaptive)
+      baseFontSize = baseStyle.fontSize!;
+    } else {
+      // No font size specified - use size enum to get base size for adaptive scaling
+      switch (size) {
+        case QuranTextSize.large:
+          baseFontSize = 24.0;
+          break;
+        case QuranTextSize.medium:
+          baseFontSize = 20.0;
+          break;
+        case QuranTextSize.small:
+          baseFontSize = 18.0;
+          break;
+      }
+    }
+
+    // Calculate adaptive scale factor based on screen width and user accessibility settings
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double widthScale = (screenWidth / 360.0).clamp(
+      0.8,
+      2.0,
+    ); // Base width 360dp
+    final double textScale = MediaQuery.of(context).textScaler.scale(1.0);
+    final double combinedScale = (widthScale * textScale).clamp(0.8, 2.0);
+    final double finalFontSize = baseFontSize * combinedScale;
+
+    // Create final text style by merging base style with adaptive font size and other parameters
+    final TextStyle finalStyle = baseStyle.copyWith(
+      fontSize: finalFontSize,
+      height: lineHeight ?? baseStyle.height ?? 2.2,
+      color: color ?? baseStyle.color ?? AppColors.textPrimary,
+    );
 
     return Text(
       text,
-      style: effectiveStyle,
+      style: finalStyle,
       textAlign: textAlign,
       textDirection: textDirection,
       maxLines: maxLines,
       overflow: overflow,
       // Ensure proper Arabic shaping and text direction
-      textScaler: MediaQuery.of(context).textScaler.clamp(
-        maxScaleFactor: .8, // Prevent text from becoming too small
-        minScaleFactor: .0, // Prevent text from becoming too large
-      ),
       strutStyle: const StrutStyle(
         forceStrutHeight: true,
         leading: 0.2, // Extra leading for Arabic text

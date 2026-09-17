@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quran_app/core/widgets/typography/quran_text.dart';
 
 import '../../../../app/theme/app_spacing.dart';
-import '../../../../app/theme/app_typography.dart';
 import '../../../../core/widgets/cards/app_card.dart';
 import '../../../../core/widgets/buttons/app_icon_button.dart';
 import '../../domain/entities/ayah.dart';
@@ -53,11 +52,11 @@ class _AyahTileState extends State<AyahTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            QuranText(
-              text: widget.ayah.arabicText,
-              style: AppTypography.arabicMedium,
-              textAlign: TextAlign.right,
-            ),
+QuranText(
+               text: widget.ayah.arabicText,
+               size: QuranTextSize.medium,
+               textAlign: TextAlign.right,
+             ),
             if (widget.ayah.translation != null) ...<Widget>[
               SizedBox(height: AppSpacing.sm),
               Text(widget.ayah.translation ?? ''),

@@ -53,47 +53,47 @@ class _SurahListPageState extends ConsumerState<SurahListPage> {
           onRetry: () =>
               ref.read(surahListControllerProvider.notifier).refresh(),
         ),
-        AsyncData(value: final list) => list.isEmpty
-            ? const AppEmptyView(message: 'No surahs found')
-            : AdaptiveLayout.builder(
-                builder: (context, size) {
-                  if (size == AdaptiveSize.expanded) {
-                    final int selected =
-                        _selectedSurah ?? list.first.number;
-                    return Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: _SurahListView(
-                            surahs: list,
-                            selectedSurah: selected,
-                            onTap: _selectSurah,
-                            onRefresh: () => ref
-                                .read(surahListControllerProvider.notifier)
-                                .refresh(),
+        AsyncData(value: final list) =>
+          list.isEmpty
+              ? const AppEmptyView(message: 'No surahs found')
+              : AdaptiveLayout.builder(
+                  builder: (context, size) {
+                    if (size == AdaptiveSize.expanded) {
+                      final int selected = _selectedSurah ?? list.first.number;
+                      return Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 2,
+                            child: _SurahListView(
+                              surahs: list,
+                              selectedSurah: selected,
+                              onTap: _selectSurah,
+                              onRefresh: () => ref
+                                  .read(surahListControllerProvider.notifier)
+                                  .refresh(),
+                            ),
                           ),
-                        ),
-                        const VerticalDivider(width: 1),
-                        Expanded(
-                          flex: 3,
-                          child: SurahDetailContent(
-                            key: ValueKey<int>(selected),
-                            surahNumber: selected,
+                          const VerticalDivider(width: 1),
+                          Expanded(
+                            flex: 3,
+                            child: SurahDetailContent(
+                              key: ValueKey<int>(selected),
+                              surahNumber: selected,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      );
+                    }
+                    return _SurahListView(
+                      surahs: list,
+                      selectedSurah: null,
+                      onTap: _openSurah,
+                      onRefresh: () => ref
+                          .read(surahListControllerProvider.notifier)
+                          .refresh(),
                     );
-                  }
-                  return _SurahListView(
-                    surahs: list,
-                    selectedSurah: null,
-                    onTap: _openSurah,
-                    onRefresh: () => ref
-                        .read(surahListControllerProvider.notifier)
-                        .refresh(),
-                  );
-                },
-              ),
+                  },
+                ),
       },
     );
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:quran_app/core/widgets/typography/app_section_label.dart';
+import 'package:quran_app/core/widgets/typography/adaptive_text.dart';
+import 'package:quran_app/core/widgets/typography/quran_text.dart';
 
 import '../../../app/theme/app_theme.dart';
+import '../../../app/theme/app_typography.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_radius.dart';
 import '../../../app/theme/app_shadows.dart';
@@ -14,7 +18,6 @@ import '../widgets/cards/app_card.dart';
 import '../widgets/indicators/app_badge.dart';
 import '../widgets/indicators/app_circular_progress.dart';
 import '../widgets/indicators/app_progress_bar.dart';
-
 /// Noble Forest Design System Showcase Screen
 ///
 /// This screen visually demonstrates the complete Noble Forest system.
@@ -280,6 +283,29 @@ class DesignSystemScreen extends StatelessWidget {
           'Elegant and balanced Arabic typography optimized for mobile screen reading.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
+        const SizedBox(height: AppSpacing.md),
+        const AppSectionLabel('QURAN TEXT'),
+        const SizedBox(height: AppSpacing.xs),
+        QuranText(
+          text: 'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+          size: QuranTextSize.large,
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        QuranText(
+          text: 'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+          size: QuranTextSize.medium,
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        QuranText(
+          text: 'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+          size: QuranTextSize.small,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        const AppSectionLabel('ADAPTIVE TEXT'),
+        const SizedBox(height: AppSpacing.xs),
+        AdaptiveText('This text scales with screen size', style: AppTypography.bodyMedium),
+        const SizedBox(height: AppSpacing.xs),
+        AdaptiveText('Heading example', style: AppTypography.titleMedium),
       ],
     );
   }

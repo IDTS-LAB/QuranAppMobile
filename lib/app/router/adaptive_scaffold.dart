@@ -45,6 +45,11 @@ class AdaptiveScaffold extends StatelessWidget {
       icon: Icons.bookmark_outline,
       selectedIcon: Icons.bookmark,
     ),
+    _Destination(
+      label: 'System',
+      icon: Icons.bookmark_outline,
+      selectedIcon: Icons.bookmark,
+    ),
   ];
 
   void _goToBranch(int index) {
@@ -68,25 +73,16 @@ class AdaptiveScaffold extends StatelessWidget {
           );
         }
         if (Breakpoints.isMedium(width)) {
-          return _MediumShell(
-            onSelect: _goToBranch,
-            child: navigationShell,
-          );
+          return _MediumShell(onSelect: _goToBranch, child: navigationShell);
         }
-        return _CompactShell(
-          onSelect: _goToBranch,
-          child: navigationShell,
-        );
+        return _CompactShell(onSelect: _goToBranch, child: navigationShell);
       },
     );
   }
 }
 
 class _CompactShell extends StatelessWidget {
-  const _CompactShell({
-    required this.onSelect,
-    required this.child,
-  });
+  const _CompactShell({required this.onSelect, required this.child});
 
   final ValueChanged<int> onSelect;
   final Widget child;
@@ -115,10 +111,7 @@ class _CompactShell extends StatelessWidget {
 }
 
 class _MediumShell extends StatelessWidget {
-  const _MediumShell({
-    required this.onSelect,
-    required this.child,
-  });
+  const _MediumShell({required this.onSelect, required this.child});
 
   final ValueChanged<int> onSelect;
   final Widget child;
