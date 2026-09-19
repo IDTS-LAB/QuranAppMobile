@@ -6,6 +6,7 @@ import 'package:quran_app/app/theme/app_spacing.dart';
 
 import 'package:quran_app/core/responsive/breakpoints.dart';
 import 'package:quran_app/core/responsive/foldable/fold_info.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 /// Navigation type override for [AdaptiveScaffold].
 enum NavigationType {
@@ -23,14 +24,12 @@ enum NavigationType {
 }
 
 /// Single destination entry mapping a shell branch to its tab UI.
+///
+/// Icons are static; labels resolve per locale via
+/// [AdaptiveScaffold] and are passed into the shells.
 class _Destination {
-  const _Destination({
-    required this.label,
-    required this.icon,
-    required this.selectedIcon,
-  });
+  const _Destination({required this.icon, required this.selectedIcon});
 
-  final String label;
   final FaIcon icon;
   final FaIcon selectedIcon;
 }
@@ -67,30 +66,34 @@ class AdaptiveScaffold extends StatelessWidget {
 
   static const List<_Destination> _destinations = <_Destination>[
     _Destination(
-      label: 'Home',
       icon: FaIcon(FontAwesomeIcons.solidHouse),
       selectedIcon: FaIcon(FontAwesomeIcons.solidHouse),
     ),
     _Destination(
-      label: 'Quran',
       icon: FaIcon(FontAwesomeIcons.bookQuran),
       selectedIcon: FaIcon(FontAwesomeIcons.bookQuran),
     ),
     _Destination(
-      label: 'Hifz',
       icon: FaIcon(FontAwesomeIcons.heartPulse),
       selectedIcon: FaIcon(FontAwesomeIcons.heartPulse),
     ),
     _Destination(
-      label: 'Listen',
       icon: FaIcon(FontAwesomeIcons.headphones),
       selectedIcon: FaIcon(FontAwesomeIcons.headphones),
     ),
     _Destination(
-      label: 'More',
       icon: FaIcon(FontAwesomeIcons.ellipsis),
       selectedIcon: FaIcon(FontAwesomeIcons.ellipsis),
     ),
+  ];
+
+  /// Localized labels in destination order (home, quran, hifz, listen, more).
+  static List<String> _labels(AppLocalizations localizations) => <String>[
+    localizations.navHome,
+    localizations.navQuran,
+    localizations.navHifz,
+    localizations.navListen,
+    localizations.navMore,
   ];
 
   void _goToBranch(int index) {
@@ -107,6 +110,7 @@ class AdaptiveScaffold extends StatelessWidget {
         final FoldInfo foldable = FoldInfo.fromContext(context);
         final breakpoint = Breakpoints.breakpointOf(constraints.maxWidth);
         final type = _resolveType(breakpoint, foldable);
+        final List<String> labels = _labels(AppLocalizations.of(context));
 
         // Half-open tabletop: keep nav interactive below the hinge while
         // content uses the upper region.
@@ -116,6 +120,7 @@ class AdaptiveScaffold extends StatelessWidget {
           return _TabletopShell(
             onSelect: _goToBranch,
             hingeHeight: foldable.hingeBounds?.height ?? 0,
+            labels: labels,
             child: navigationShell,
           );
         }
@@ -126,12 +131,14 @@ class AdaptiveScaffold extends StatelessWidget {
               onSelect: _goToBranch,
               hingeWidth: foldable.hingeBounds?.width ?? 0,
               extended: true,
+              labels: labels,
               child: navigationShell,
             );
           case NavigationType.rail:
             if (breakpoint == AppBreakpoint.medium) {
               return _MediumShell(
                 onSelect: _goToBranch,
+                labels: labels,
                 child: navigationShell,
               );
             }
@@ -139,11 +146,16 @@ class AdaptiveScaffold extends StatelessWidget {
               onSelect: _goToBranch,
               hingeWidth: foldable.hingeBounds?.width ?? 0,
               extended: false,
+              labels: labels,
               child: navigationShell,
             );
           case NavigationType.bottomBar:
           case NavigationType.automatic:
-            return _CompactShell(onSelect: _goToBranch, child: navigationShell);
+            return _CompactShell(
+              onSelect: _goToBranch,
+              labels: labels,
+              child: navigationShell,
+            );
         }
       },
     );
@@ -172,9 +184,16 @@ class AdaptiveScaffold extends StatelessWidget {
 }
 
 class _CompactShell extends StatelessWidget {
-  const _CompactShell({required this.onSelect, required this.child});
+  const _CompactShell({
+    required this.onSelect,
+    required this.labels,
+    required this.child,
+  });
 
   final ValueChanged<int> onSelect;
+
+  /// Localized destination labels in branch order.
+  final List<String> labels;
   final Widget child;
 
   @override
@@ -213,12 +232,11 @@ class _CompactShell extends StatelessWidget {
             // Neutral canvas (not the green-tinted M3 surfaceContainer).
             backgroundColor: AppColors.canvas,
             destinations: <Widget>[
-              for (final _Destination destination
-                  in AdaptiveScaffold._destinations)
+              for (var i = 0; i < AdaptiveScaffold._destinations.length; i++)
                 NavigationDestination(
-                  icon: destination.icon,
-                  selectedIcon: destination.selectedIcon,
-                  label: destination.label,
+                  icon: AdaptiveScaffold._destinations[i].icon,
+                  selectedIcon: AdaptiveScaffold._destinations[i].selectedIcon,
+                  label: labels[i],
                 ),
             ],
           ),
@@ -229,9 +247,16 @@ class _CompactShell extends StatelessWidget {
 }
 
 class _MediumShell extends StatelessWidget {
-  const _MediumShell({required this.onSelect, required this.child});
+  const _MediumShell({
+    required this.onSelect,
+    required this.labels,
+    required this.child,
+  });
 
   final ValueChanged<int> onSelect;
+
+  /// Localized destination labels in branch order.
+  final List<String> labels;
   final Widget child;
 
   @override
@@ -268,12 +293,16 @@ class _MediumShell extends StatelessWidget {
                 ),
                 useIndicator: false,
                 destinations: <NavigationRailDestination>[
-                  for (final _Destination destination
-                      in AdaptiveScaffold._destinations)
+                  for (
+                    var i = 0;
+                    i < AdaptiveScaffold._destinations.length;
+                    i++
+                  )
                     NavigationRailDestination(
-                      icon: destination.icon,
-                      selectedIcon: destination.selectedIcon,
-                      label: Text(destination.label),
+                      icon: AdaptiveScaffold._destinations[i].icon,
+                      selectedIcon:
+                          AdaptiveScaffold._destinations[i].selectedIcon,
+                      label: Text(labels[i]),
                     ),
                 ],
               ),
@@ -291,12 +320,16 @@ class _ExpandedShell extends StatelessWidget {
   const _ExpandedShell({
     required this.onSelect,
     required this.hingeWidth,
+    required this.labels,
     required this.child,
     this.extended = false,
   });
 
   final ValueChanged<int> onSelect;
   final double hingeWidth;
+
+  /// Localized destination labels in branch order.
+  final List<String> labels;
   final Widget child;
 
   /// Extended rail (sidebar) on large/extraLarge windows.
@@ -337,12 +370,16 @@ class _ExpandedShell extends StatelessWidget {
                 ),
                 useIndicator: false,
                 destinations: <NavigationRailDestination>[
-                  for (final _Destination destination
-                      in AdaptiveScaffold._destinations)
+                  for (
+                    var i = 0;
+                    i < AdaptiveScaffold._destinations.length;
+                    i++
+                  )
                     NavigationRailDestination(
-                      icon: destination.icon,
-                      selectedIcon: destination.selectedIcon,
-                      label: Text(destination.label),
+                      icon: AdaptiveScaffold._destinations[i].icon,
+                      selectedIcon:
+                          AdaptiveScaffold._destinations[i].selectedIcon,
+                      label: Text(labels[i]),
                       padding: const EdgeInsets.only(bottom: AppSpacing.md),
                     ),
                 ],
@@ -368,11 +405,15 @@ class _TabletopShell extends StatelessWidget {
   const _TabletopShell({
     required this.onSelect,
     required this.hingeHeight,
+    required this.labels,
     required this.child,
   });
 
   final ValueChanged<int> onSelect;
   final double hingeHeight;
+
+  /// Localized destination labels in branch order.
+  final List<String> labels;
   final Widget child;
 
   @override
@@ -390,12 +431,12 @@ class _TabletopShell extends StatelessWidget {
               // Neutral canvas (not the green-tinted M3 surfaceContainer).
               backgroundColor: AppColors.canvas,
               destinations: <Widget>[
-                for (final _Destination destination
-                    in AdaptiveScaffold._destinations)
+                for (var i = 0; i < AdaptiveScaffold._destinations.length; i++)
                   NavigationDestination(
-                    icon: destination.icon,
-                    selectedIcon: destination.selectedIcon,
-                    label: destination.label,
+                    icon: AdaptiveScaffold._destinations[i].icon,
+                    selectedIcon:
+                        AdaptiveScaffold._destinations[i].selectedIcon,
+                    label: labels[i],
                   ),
               ],
             ),

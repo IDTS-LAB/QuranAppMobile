@@ -1,0 +1,160 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-09-19T00:00:00.000",
+
+  "appTitle": "Quran",
+  "@appTitle": { "description": "Application title." },
+
+  "navHome": "Home",
+  "@navHome": { "description": "Bottom/rail navigation destination: home." },
+  "navQuran": "Quran",
+  "@navQuran": { "description": "Bottom/rail navigation destination: Quran reader." },
+  "navHifz": "Hifz",
+  "@navHifz": { "description": "Bottom/rail navigation destination: memorization tracker." },
+  "navListen": "Listen",
+  "@navListen": { "description": "Bottom/rail navigation destination: audio." },
+  "navMore": "More",
+  "@navMore": { "description": "Bottom/rail navigation destination: more/settings." },
+
+  "homeGreeting": "Assalamu Alaikum,",
+  "@homeGreeting": { "description": "Home header greeting line." },
+  "homeDate": "Monday, 23 Oct • 8 Rabi' al-Thani",
+  "@homeDate": { "description": "Demo date line until real Hijri/Gregorian formatting lands." },
+
+  "menuReadTitle": "Read Quran",
+  "@menuReadTitle": { "description": "Home grid menu item title." },
+  "menuReadSubtitle": "Read & Explore",
+  "@menuReadSubtitle": { "description": "Home grid menu item subtitle." },
+  "menuListenTitle": "Audio Hub",
+  "@menuListenTitle": { "description": "Home grid menu item title." },
+  "menuListenSubtitle": "Recitation",
+  "@menuListenSubtitle": { "description": "Home grid menu item subtitle." },
+  "menuHifzTitle": "Memorization",
+  "@menuHifzTitle": { "description": "Home grid menu item title." },
+  "menuHifzSubtitle": "Hifz Tracker",
+  "@menuHifzSubtitle": { "description": "Home grid menu item subtitle." },
+  "menuSearchTitle": "Search",
+  "@menuSearchTitle": { "description": "Home grid menu item title." },
+  "menuSearchSubtitle": "Explore",
+  "@menuSearchSubtitle": { "description": "Home grid menu item subtitle." },
+  "homeShortcuts": "Shortcuts",
+  "@homeShortcuts": { "description": "Home grid menu section header." },
+
+  "homeRecentlyRead": "Recently Read",
+  "@homeRecentlyRead": { "description": "Home section header." },
+  "homeSeeAll": "See All",
+  "@homeSeeAll": { "description": "Home section action." },
+
+  "progressBadge": "Continue Reading",
+  "@progressBadge": { "description": "Progress card badge." },
+  "progressSurahName": "Al-Baqarah",
+  "@progressSurahName": { "description": "Demo surah name until reading position drives it." },
+  "progressAyahJuz": "Ayah {ayah} • Juz {juz}",
+  "@progressAyahJuz": {
+    "description": "Demo reading position line.",
+    "placeholders": {
+      "ayah": { "type": "String", "example": "142" },
+      "juz": { "type": "String", "example": "2" }
+    }
+  },
+  "progressReadNow": "Read Now",
+  "@progressReadNow": { "description": "Progress card CTA." },
+
+  "goalTitle": "Daily Quran Goal",
+  "@goalTitle": { "description": "Goal card title." },
+  "goalProgress": "8 of 10 pages completed",
+  "@goalProgress": { "description": "Demo goal progress until real goal data lands." },
+  "goalStreak": "12 Day streak",
+  "@goalStreak": { "description": "Demo streak until real streak data lands." },
+
+  "recentSurahName": "Al-Kahf",
+  "@recentSurahName": { "description": "Demo recent-read surah until history lands." },
+  "recentDetail": "Ayah 10 • Juz 15",
+  "@recentDetail": { "description": "Demo recent-read detail until history lands." },
+
+  "surahsTitle": "Surahs",
+  "@surahsTitle": { "description": "Surah list app bar title." },
+  "surahsEmpty": "No surahs found",
+  "@surahsEmpty": { "description": "Surah list empty state." },
+  "surahTitle": "Surah {number}",
+  "@surahTitle": {
+    "description": "Surah detail app bar title.",
+    "placeholders": { "number": { "type": "int", "example": "18" } }
+  },
+  "surahEmpty": "No ayahs found",
+  "@surahEmpty": { "description": "Surah detail empty state." },
+  "surahListSubtitle": "{meaning} · {count} ayahs",
+  "@surahListSubtitle": {
+    "description": "Surah card subtitle line.",
+    "placeholders": {
+      "meaning": { "type": "String", "example": "The Cave" },
+      "count": { "type": "int", "example": "110" }
+    }
+  },
+  "surahCardSemantics": "{name}, {meaning}, {count} ayahs",
+  "@surahCardSemantics": {
+    "description": "Screen-reader label for a surah card.",
+    "placeholders": {
+      "name": { "type": "String", "example": "Al-Kahf" },
+      "meaning": { "type": "String", "example": "The Cave" },
+      "count": { "type": "int", "example": "110" }
+    }
+  },
+
+  "searchTitle": "Search",
+  "@searchTitle": { "description": "Search page app bar title." },
+  "searchHint": "Search the Quran",
+  "@searchHint": { "description": "Search field hint and initial empty state." },
+  "searchTooShort": "Type at least 2 characters",
+  "@searchTooShort": { "description": "Search hint for short queries." },
+  "searchNoResults": "No results found",
+  "@searchNoResults": { "description": "Search empty-results state." },
+
+  "bookmarksTitle": "Bookmarks",
+  "@bookmarksTitle": { "description": "Bookmarks page app bar title." },
+  "bookmarksEmpty": "No bookmarks yet",
+  "@bookmarksEmpty": { "description": "Bookmarks empty state." },
+  "bookmarkRow": "Surah {surah} · Ayah {ayah}",
+  "@bookmarkRow": {
+    "description": "Bookmark list row title.",
+    "placeholders": {
+      "surah": { "type": "int", "example": "2" },
+      "ayah": { "type": "int", "example": "142" }
+    }
+  },
+  "bookmarkRemoveRowTooltip": "Remove bookmark",
+  "@bookmarkRemoveRowTooltip": { "description": "Bookmark row delete tooltip." },
+
+  "ayahLabel": "Ayah {number}",
+  "@ayahLabel": {
+    "description": "Ayah tile footer label.",
+    "placeholders": { "number": { "type": "int", "example": "10" } }
+  },
+  "bookmarkAdd": "Bookmark",
+  "@bookmarkAdd": { "description": "Bookmark action tooltip." },
+  "bookmarkRemove": "Remove bookmark",
+  "@bookmarkRemove": { "description": "Remove-bookmark action tooltip." },
+
+  "resumeTitle": "Resume Surah {surah} · Ayah {ayah}",
+  "@resumeTitle": {
+    "description": "Resume banner title and screen-reader label.",
+    "placeholders": {
+      "surah": { "type": "int", "example": "2" },
+      "ayah": { "type": "int", "example": "142" }
+    }
+  },
+
+  "retryButton": "Retry",
+  "@retryButton": { "description": "Shared retry button label." },
+
+  "settingsTitle": "Settings",
+  "@settingsTitle": { "description": "Settings page app bar title." },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": { "description": "Settings language section title." },
+  "settingsLanguageSubtitle": "Applies immediately and is remembered.",
+  "@settingsLanguageSubtitle": { "description": "Settings language helper text." },
+  "settingsSystemDefault": "System default",
+  "@settingsSystemDefault": { "description": "Follow-device-language option." },
+  "languageNameEnglish": "English",
+  "@languageNameEnglish": { "description": "English language display name." }
+}

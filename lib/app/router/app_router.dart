@@ -6,6 +6,7 @@ import 'package:quran_app/features/quran/presentation/pages/bookmarks_page.dart'
 import 'package:quran_app/features/quran/presentation/pages/search_page.dart';
 import 'package:quran_app/features/quran/presentation/pages/surah_detail_page.dart';
 import 'package:quran_app/features/quran/presentation/pages/surah_list_page.dart';
+import 'package:quran_app/features/settings/presentation/pages/settings_page.dart';
 
 import 'adaptive_scaffold.dart';
 import 'route_guards.dart';
@@ -106,6 +107,23 @@ abstract final class AppRouter {
                   pageBuilder: (context, state) => CustomTransitionPage(
                     key: state.pageKey,
                     child: const BookmarksPage(),
+                    transitionsBuilder: (
+                      context,
+                      animation,
+                      secondaryAnimation,
+                      child,
+                    ) => FadeTransition(opacity: animation, child: child),
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: <RouteBase>[
+                GoRoute(
+                  path: RouteNames.more,
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: const SettingsPage(),
                     transitionsBuilder: (
                       context,
                       animation,

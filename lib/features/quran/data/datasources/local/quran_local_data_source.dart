@@ -7,8 +7,7 @@ final class QuranLocalDataSource {
 
   Future<List<SurahRow>> getSurahs() => _dao.getSurahs();
 
-  Future<List<AyahRow>> getAyahs(int surahNumber) =>
-      _dao.getAyahs(surahNumber);
+  Future<List<AyahRow>> getAyahs(int surahNumber) => _dao.getAyahs(surahNumber);
 
   Future<List<AyahRow>> search(String query) => _dao.searchAyahs(query);
 

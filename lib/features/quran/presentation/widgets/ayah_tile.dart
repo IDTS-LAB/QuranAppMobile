@@ -6,6 +6,7 @@ import 'package:quran_app/app/theme/app_typography.dart';
 import 'package:quran_app/core/widgets/cards/app_card.dart';
 import 'package:quran_app/core/widgets/buttons/app_icon_button.dart';
 import 'package:quran_app/features/quran/domain/entities/ayah.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 /// Tile for a single ayah.
 ///
@@ -58,6 +59,7 @@ class _AyahTileState extends State<AyahTile> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return AppCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -79,7 +81,7 @@ class _AyahTileState extends State<AyahTile> {
             children: <Widget>[
               Flexible(
                 child: Text(
-                  'Ayah ${widget.ayah.numberInSurah}',
+                  localizations.ayahLabel(widget.ayah.numberInSurah),
                   style: AppTypography.labelLarge,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -90,7 +92,9 @@ class _AyahTileState extends State<AyahTile> {
                 icon: Icon(
                   widget.bookmarked ? Icons.bookmark : Icons.bookmark_outline,
                 ),
-                tooltip: widget.bookmarked ? 'Remove bookmark' : 'Bookmark',
+                tooltip: widget.bookmarked
+                    ? localizations.bookmarkRemove
+                    : localizations.bookmarkAdd,
                 onPressed: widget.onBookmark,
               ),
             ],

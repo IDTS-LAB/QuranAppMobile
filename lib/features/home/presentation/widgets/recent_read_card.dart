@@ -6,12 +6,14 @@ import 'package:quran_app/core/widgets/buttons/app_icon_button.dart';
 import 'package:quran_app/core/widgets/cards/app_card.dart';
 import 'package:quran_app/core/widgets/responsive_padding.dart';
 import 'package:quran_app/core/widgets/typography/adaptive_text.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 class HomePageRecentReadCard extends StatelessWidget {
   const HomePageRecentReadCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return AppCard(
       padding: EdgeInsets.all(0),
       child: ResponsivePadding(
@@ -49,14 +51,14 @@ class HomePageRecentReadCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AdaptiveText(
-                          "Al-Kahf",
+                          localizations.recentSurahName,
                           style: TextStyle(
                             color: AppColors.textPrimary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         AdaptiveText(
-                          "Ayah 10 • Juz 15",
+                          localizations.recentDetail,
                           style: TextStyle(color: AppColors.textSecondary),
                         ),
                       ],

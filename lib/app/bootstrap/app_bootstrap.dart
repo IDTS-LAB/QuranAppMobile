@@ -16,10 +16,7 @@ abstract final class AppBootstrap {
   /// Runs startup initialization. Safe to call once; subsequent calls
   /// are no-ops. Never throws — seeding failures are reported via
   /// [debugPrint] so a corrupt/missing seed never blocks launch.
-  static Future<void> init({
-    AppDatabase? database,
-    AssetBundle? bundle,
-  }) async {
+  static Future<void> init({AppDatabase? database, AssetBundle? bundle}) async {
     WidgetsFlutterBinding.ensureInitialized();
     if (_initialized) {
       return;

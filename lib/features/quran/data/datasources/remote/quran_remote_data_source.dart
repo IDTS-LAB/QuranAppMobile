@@ -20,8 +20,9 @@ final class QuranRemoteDataSourceImpl implements QuranRemoteDataSource {
 
   @override
   Future<List<Map<String, Object?>>> fetchSurahAyahs(int surahNumber) async {
-    final res =
-        await _dio.get('/surah/$surahNumber/${AppConstants.translationEdition}');
+    final res = await _dio.get(
+      '/surah/$surahNumber/${AppConstants.translationEdition}',
+    );
     final data =
         (res.data as Map<String, Object?>)['data'] as Map<String, Object?>;
     return (data['ayahs'] as List).cast<Map<String, Object?>>();

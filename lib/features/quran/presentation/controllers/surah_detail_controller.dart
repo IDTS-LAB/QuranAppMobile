@@ -5,6 +5,7 @@ import 'package:quran_app/core/result/result.dart';
 import 'package:quran_app/features/quran/domain/entities/ayah.dart';
 import 'package:quran_app/features/quran/domain/entities/surah.dart';
 import 'package:quran_app/features/quran/presentation/providers/quran_providers.dart';
+
 import 'quran_views.dart';
 
 final class SurahDetailController extends AsyncNotifier<SurahDetailView> {
@@ -14,9 +15,9 @@ final class SurahDetailController extends AsyncNotifier<SurahDetailView> {
 
   @override
   Future<SurahDetailView> build() async {
-    final ayahsResult = await ref.watch(getSurahDetailProvider).call(
-      _surahNumber,
-    );
+    final ayahsResult = await ref
+        .watch(getSurahDetailProvider)
+        .call(_surahNumber);
     final surahsResult = await ref.watch(getSurahsProvider).call();
     return _combine(ayahsResult, surahsResult, _surahNumber);
   }
@@ -24,9 +25,9 @@ final class SurahDetailController extends AsyncNotifier<SurahDetailView> {
   Future<void> refresh() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      final ayahsResult = await ref.read(getSurahDetailProvider).call(
-        _surahNumber,
-      );
+      final ayahsResult = await ref
+          .read(getSurahDetailProvider)
+          .call(_surahNumber);
       final surahsResult = await ref.read(getSurahsProvider).call();
       return _combine(ayahsResult, surahsResult, _surahNumber);
     });

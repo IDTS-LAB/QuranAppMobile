@@ -7,8 +7,14 @@ import 'package:quran_app/features/quran/domain/use_cases/get_surahs.dart';
 class _FakeRepo implements SurahRepository {
   @override
   Future<Result<List<Surah>>> getSurahs() async => const Result.success([
-    Surah(number: 1, arabicName: 'الفاتحة', englishName: 'Al-Fatiha',
-      englishMeaning: 'The Opener', revelationType: 'Meccan', ayahCount: 7),
+    Surah(
+      number: 1,
+      arabicName: 'الفاتحة',
+      englishName: 'Al-Fatiha',
+      englishMeaning: 'The Opener',
+      revelationType: 'Meccan',
+      ayahCount: 7,
+    ),
   ]);
   @override
   dynamic noSuchMethod(Invocation i) => super.noSuchMethod(i);

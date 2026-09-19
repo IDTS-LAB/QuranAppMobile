@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quran_app/app/theme/app_colors.dart';
 import 'package:quran_app/app/theme/app_typography.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 /// Home page header: greeting, user name, date, and avatar.
 ///
@@ -19,6 +20,7 @@ class HomePageHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,7 +30,7 @@ class HomePageHeader extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Assalamu Alaikum,',
+                localizations.homeGreeting,
                 style: AppTypography.titleMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -45,7 +47,7 @@ class HomePageHeader extends ConsumerWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
-                "Monday, 23 Oct • 8 Rabi' al-Thani",
+                localizations.homeDate,
                 style: AppTypography.titleMedium.copyWith(
                   color: AppColors.nobleGold,
                   fontWeight: FontWeight.bold,

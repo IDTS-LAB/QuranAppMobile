@@ -7,6 +7,7 @@ abstract final class RouteNames {
   static const String surahs = '/surahs';
   static const String search = '/search';
   static const String bookmarks = '/bookmarks';
+  static const String more = '/more';
   static String surahDetail(int surahNumber) => '$surahs/$surahNumber';
 
   /// Maps a [location] to its shell branch index:

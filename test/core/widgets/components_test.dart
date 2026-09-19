@@ -23,6 +23,7 @@ import 'package:quran_app/features/quran/domain/entities/surah.dart';
 import 'package:quran_app/features/quran/presentation/widgets/ayah_tile.dart';
 import 'package:quran_app/features/quran/presentation/widgets/resume_banner.dart';
 import 'package:quran_app/features/quran/presentation/widgets/surah_card.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 const _phone = Size(320, 700);
 const _tablet = Size(1024, 768);
@@ -36,7 +37,11 @@ Future<void> _pumpAtSize(WidgetTester tester, Widget child, Size size) {
   });
   return tester.pumpWidget(
     ProviderScope(
-      child: MaterialApp(home: Scaffold(body: child)),
+      child: MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: child),
+      ),
     ),
   );
 }

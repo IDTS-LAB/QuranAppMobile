@@ -13,10 +13,15 @@ abstract class AyahDto with _$AyahDto {
     int? juz,
     int? page,
   }) = _AyahDto;
-  factory AyahDto.fromJson(Map<String, Object?> json) => _$AyahDtoFromJson(json);
+  factory AyahDto.fromJson(Map<String, Object?> json) =>
+      _$AyahDtoFromJson(json);
   Ayah toEntity({required int surahNumber, String? translation}) => Ayah(
-    surahNumber: surahNumber, numberInSurah: numberInSurah,
-    numberInQuran: number, arabicText: text,
-    translation: translation, juz: juz, page: page,
+    surahNumber: surahNumber,
+    numberInSurah: numberInSurah,
+    numberInQuran: number,
+    arabicText: text,
+    translation: translation,
+    juz: juz,
+    page: page,
   );
 }

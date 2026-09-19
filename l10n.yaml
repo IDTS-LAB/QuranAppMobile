@@ -1,0 +1,14 @@
+# Flutter gen-l10n configuration.
+#
+# ARB sources live in lib/l10n; the synthetic flutter_gen package is
+# generated on build (requires `generate: true` in pubspec.yaml).
+# To add a language: copy app_en.arb to app_<code>.arb, translate values,
+# and add the locale to AppLocale (lib/core/localization/app_locale.dart).
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+synthetic-package: false
+preferred-supported-locales: ["en"]
+nullable-getter: false
+format: true

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:quran_app/core/widgets/layout/fold_aware_layout.dart';
 import 'package:quran_app/core/widgets/layout/responsive_container.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 import '../widgets/surah_detail_content.dart';
 
@@ -22,7 +23,9 @@ class SurahDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: Text('Surah $surahNumber')),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).surahTitle(surahNumber)),
+      ),
       body: ResponsiveContainer(
         child: FoldAwareLayout(
           respectSafeAreas: false,

@@ -9,9 +9,7 @@ final class SearchQuran {
   Future<Result<List<Ayah>>> call(String query) {
     if (query.trim().length < 2) {
       return Future.value(
-        const Result.failure(
-          ValidationException('Type at least 2 characters'),
-        ),
+        const Result.failure(ValidationException('Type at least 2 characters')),
       );
     }
     return _repo.search(query.trim());

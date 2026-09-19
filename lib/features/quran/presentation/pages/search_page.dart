@@ -8,6 +8,7 @@ import '../../../../core/widgets/empty/app_empty_view.dart';
 import '../../../../core/widgets/error/app_error_view.dart';
 import '../../../../core/widgets/layout/responsive_container.dart';
 import '../../../../core/widgets/loading/app_loading.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/ayah.dart';
 import '../controllers/quran_views.dart';
 import '../providers/quran_providers.dart';
@@ -56,8 +57,9 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Search')),
+      appBar: AppBar(title: Text(localizations.searchTitle)),
       body: ResponsiveContainer(
         child: Column(
           children: <Widget>[
@@ -66,10 +68,10 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               child: TextField(
                 controller: _controller,
                 onChanged: _onChanged,
-                decoration: const InputDecoration(
-                  hintText: 'Search the Quran',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: localizations.searchHint,
+                  prefixIcon: const Icon(Icons.search),
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
@@ -89,11 +91,12 @@ class _SearchResults extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context);
     if (query.isEmpty) {
-      return const AppEmptyView(message: 'Search the Quran');
+      return AppEmptyView(message: localizations.searchHint);
     }
     if (query.length < SearchPage.minQueryLength) {
-      return const AppEmptyView(message: 'Type at least 2 characters');
+      return AppEmptyView(message: localizations.searchTooShort);
     }
     final AsyncValue<List<Ayah>> results = ref.watch(
       searchResultsProvider(query),
@@ -106,7 +109,7 @@ class _SearchResults extends ConsumerWidget {
       ),
       AsyncData(value: final ayahs) =>
         ayahs.isEmpty
-            ? const AppEmptyView(message: 'No results found')
+            ? AppEmptyView(message: localizations.searchNoResults)
             : _ResultsList(query: query, ayahs: ayahs),
     };
   }

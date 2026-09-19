@@ -38,18 +38,16 @@ void main() {
       },
     ]);
 
-await tester.pumpWidget(
+    await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          databaseProvider.overrideWithValue(db),
-        ],
+        overrides: [databaseProvider.overrideWithValue(db)],
         child: const QuranApp(),
       ),
     );
     await tester.pumpAndSettle();
 
-expect(find.text('Surahs'), findsAtLeast(1));
-     expect(find.byType(SurahCard), findsAtLeast(1));
+    expect(find.text('Surahs'), findsAtLeast(1));
+    expect(find.byType(SurahCard), findsAtLeast(1));
 
     // Clean up
     await db.close();

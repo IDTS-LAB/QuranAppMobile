@@ -14,10 +14,14 @@ abstract class SurahDto with _$SurahDto {
     required String revelationType,
     required int numberOfAyahs,
   }) = _SurahDto;
-  factory SurahDto.fromJson(Map<String, Object?> json) => _$SurahDtoFromJson(json);
+  factory SurahDto.fromJson(Map<String, Object?> json) =>
+      _$SurahDtoFromJson(json);
   Surah toEntity() => Surah(
-    number: number, arabicName: name, englishName: englishName,
-    englishMeaning: englishNameTranslation, revelationType: revelationType,
+    number: number,
+    arabicName: name,
+    englishName: englishName,
+    englishMeaning: englishNameTranslation,
+    revelationType: revelationType,
     ayahCount: numberOfAyahs,
   );
 }

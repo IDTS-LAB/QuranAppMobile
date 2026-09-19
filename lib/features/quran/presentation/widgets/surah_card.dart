@@ -5,6 +5,7 @@ import 'package:quran_app/app/theme/app_spacing.dart';
 import 'package:quran_app/app/theme/app_typography.dart';
 import 'package:quran_app/core/widgets/cards/app_card.dart';
 import 'package:quran_app/features/quran/domain/entities/surah.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 /// List card for a single surah.
 ///
@@ -33,15 +34,18 @@ class SurahCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return AppCard(
       padding: const EdgeInsets.all(AppSpacing.sm),
       onTap: onTap,
       child: Semantics(
         button: true,
         selected: selected,
-        label:
-            '${surah.englishName}, ${surah.englishMeaning}, '
-            '${surah.ayahCount} ayahs',
+        label: localizations.surahCardSemantics(
+          surah.englishName,
+          surah.englishMeaning,
+          surah.ayahCount,
+        ),
         // Transparent material so the ListTile ink/selection paints above
         // the card decoration instead of being hidden beneath it.
         child: Material(
@@ -59,7 +63,10 @@ class SurahCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              '${surah.englishMeaning} · ${surah.ayahCount} ayahs',
+              localizations.surahListSubtitle(
+                surah.englishMeaning,
+                surah.ayahCount,
+              ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

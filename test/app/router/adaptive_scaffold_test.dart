@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quran_app/app/router/adaptive_scaffold.dart';
 import 'package:quran_app/app/theme/app_colors.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 GoRouter _testRouter() {
   return GoRouter(
@@ -35,7 +36,13 @@ Future<void> _pumpShellAtSize(WidgetTester tester, Size size) {
   });
   final router = _testRouter();
   addTearDown(router.dispose);
-  return tester.pumpWidget(MaterialApp.router(routerConfig: router));
+  return tester.pumpWidget(
+    MaterialApp.router(
+      routerConfig: router,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+    ),
+  );
 }
 
 void main() {

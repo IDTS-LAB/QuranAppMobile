@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_spacing.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Shared error view: message plus a retry button.
 ///
@@ -72,6 +73,9 @@ class AppRetryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FilledButton(onPressed: onRetry, child: const Text('Retry'));
+    return FilledButton(
+      onPressed: onRetry,
+      child: Text(AppLocalizations.of(context).retryButton),
+    );
   }
 }

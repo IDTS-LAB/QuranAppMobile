@@ -9,6 +9,7 @@ import '../../../../core/widgets/layout/hinge_aware_two_pane.dart';
 import '../../../../core/responsive/breakpoints.dart';
 import '../../../../core/responsive/foldable/fold_info.dart';
 import '../../../../core/responsive/foldable/foldable_layout.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../../../core/widgets/loading/app_loading.dart';
 import '../controllers/quran_views.dart';
 import '../providers/quran_providers.dart';
@@ -50,7 +51,7 @@ class _SurahListPageState extends ConsumerState<SurahListPage> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Surahs')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).surahsTitle)),
       body: switch (surahs) {
         AsyncLoading() => const AppLoading(),
         AsyncError(:final error) => AppErrorView.fromError(
@@ -60,7 +61,7 @@ class _SurahListPageState extends ConsumerState<SurahListPage> {
         ),
         AsyncData(value: final list) =>
           list.isEmpty
-              ? const AppEmptyView(message: 'No surahs found')
+              ? AppEmptyView(message: AppLocalizations.of(context).surahsEmpty)
               : _ResponsiveBody(
                   surahs: list,
                   selectedSurah: _selectedSurah,

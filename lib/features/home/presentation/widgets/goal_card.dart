@@ -5,12 +5,14 @@ import 'package:quran_app/app/theme/app_typography.dart';
 import 'package:quran_app/core/widgets/cards/app_card.dart';
 import 'package:quran_app/core/widgets/indicators/app_circular_progress.dart';
 import 'package:quran_app/core/widgets/responsive_padding.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 class HomePageGoalCard extends StatelessWidget {
   const HomePageGoalCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return AppCard(
       padding: EdgeInsets.all(0),
       child: ResponsivePadding(
@@ -28,7 +30,7 @@ class HomePageGoalCard extends StatelessWidget {
                 spacing: AppSpacing.xs,
                 children: [
                   Text(
-                    "Daily Quran Goal",
+                    localizations.goalTitle,
                     style: TextStyle(
                       color: AppColors.nobleGreen,
                       fontWeight: FontWeight.bold,
@@ -38,13 +40,13 @@ class HomePageGoalCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    "8 of 10 pages completed",
+                    localizations.goalProgress,
                     style: TextStyle(color: AppColors.textSecondary),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    "12 Day streak",
+                    localizations.goalStreak,
                     style: TextStyle(
                       color: AppColors.nobleGold,
                       fontWeight: FontWeight.bold,

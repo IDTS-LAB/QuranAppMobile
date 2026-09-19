@@ -11,14 +11,17 @@ import 'package:quran_app/core/widgets/typography/adaptive_text.dart';
 class GridMenuItem {
   /// Creates a menu item.
   GridMenuItem({
-    required this.label,
+    required this.title,
     required this.icon,
+    this.subtitle,
     this.onTap,
     this.color = Colors.black,
   });
 
   /// Item label.
-  final String label;
+  final String title;
+
+  final String? subtitle;
 
   /// Item icon.
   final FaIcon icon;
@@ -57,35 +60,47 @@ class HomePageGridMenu extends StatelessWidget {
     return ResponsiveGrid(
       minItemWidth: minItemWidth,
       maxColumns: maxColumns,
-      spacing: AppSpacing.lg,
       childAspectRatio: 1.1,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         for (final GridMenuItem item in items)
           AppCard(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.all(AppSpacing.md),
             onTap: item.onTap,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  padding: const EdgeInsets.all(AppSpacing.md),
                   decoration: BoxDecoration(
                     color: item.color.withAlpha(25),
                     borderRadius: BorderRadius.circular(AppSpacing.md),
                   ),
-                  child: Icon(item.icon.icon, size: 32, color: item.color),
+                  child: Icon(item.icon.icon, size: 24, color: item.color),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                AdaptiveText(
-                  item.label,
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: AppTypography.labelLarge.fontSize,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AdaptiveText(
+                      item.title,
+                      softWrap: true,
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppTypography.labelLarge.fontSize,
+                      ),
+                    ),
+                    AdaptiveText(
+                      item.subtitle ?? "",
+                      style: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: AppTypography.labelMedium.fontSize,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

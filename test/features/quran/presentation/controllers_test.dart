@@ -84,8 +84,7 @@ final class FakeSurahRepository implements SurahRepository {
       const Result.success(null);
 
   @override
-  Future<Result<void>> syncFromRemote() async =>
-      const Result.success(null);
+  Future<Result<void>> syncFromRemote() async => const Result.success(null);
 }
 
 void main() {
@@ -108,9 +107,7 @@ void main() {
       ],
     );
     addTearDown(container.dispose);
-    final view = await container.read(
-      surahDetailControllerProvider(1).future,
-    );
+    final view = await container.read(surahDetailControllerProvider(1).future);
     expect(view.surah.number, 1);
     expect(view.ayahs.length, 1);
   });
@@ -124,9 +121,7 @@ void main() {
     final initial = await container.read(bookmarksControllerProvider.future);
     expect(initial.length, 1);
 
-    await container
-        .read(bookmarksControllerProvider.notifier)
-        .toggle(1, 2);
+    await container.read(bookmarksControllerProvider.notifier).toggle(1, 2);
     expect(fake.toggleCalls, 1);
     final refreshed = await container.read(bookmarksControllerProvider.future);
     expect(refreshed.length, 1);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quran_app/app/theme/app_typography.dart';
 import 'package:quran_app/core/widgets/cards/app_card.dart';
 import 'package:quran_app/features/quran/domain/entities/reading_position.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 /// Banner that resumes reading at a saved [position].
 ///
@@ -23,22 +24,24 @@ class ResumeBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+    final title = localizations.resumeTitle(
+      position.surahNumber,
+      position.ayahNumber,
+    );
     return AppCard(
       variant: AppCardVariant.filled,
       onTap: onTap,
       child: Semantics(
         button: true,
-        label:
-            'Resume Surah ${position.surahNumber} at '
-            'Ayah ${position.ayahNumber}',
+        label: title,
         child: Row(
           children: <Widget>[
             const Icon(Icons.history),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Resume Surah ${position.surahNumber} · '
-                'Ayah ${position.ayahNumber}',
+                title,
                 style: AppTypography.titleSmall,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

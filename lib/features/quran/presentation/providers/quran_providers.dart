@@ -74,8 +74,8 @@ final bookmarksControllerProvider =
 
 /// Search results for a validated [query] (2+ chars enforced by
 /// [SearchQuran]). Failures surface as [AsyncError] for pages to render.
-final searchResultsProvider =
-    FutureProvider.autoDispose.family<List<Ayah>, String>((ref, query) async {
+final searchResultsProvider = FutureProvider.autoDispose
+    .family<List<Ayah>, String>((ref, query) async {
       final result = await ref.watch(searchQuranProvider).call(query);
       return switch (result) {
         Success(value: final ayahs) => ayahs,
@@ -85,11 +85,8 @@ final searchResultsProvider =
 
 /// Saved reading position for [surahNumber], or `null` when none exists
 /// or loading fails (the resume banner simply stays hidden).
-final readingPositionProvider =
-    FutureProvider.autoDispose.family<ReadingPosition?, int>((
-      ref,
-      surahNumber,
-    ) async {
+final readingPositionProvider = FutureProvider.autoDispose
+    .family<ReadingPosition?, int>((ref, surahNumber) async {
       final result = await ref
           .watch(surahRepositoryProvider)
           .getReadingPosition(surahNumber);

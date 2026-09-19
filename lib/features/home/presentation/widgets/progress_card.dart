@@ -8,12 +8,14 @@ import 'package:quran_app/core/widgets/cards/app_card.dart';
 import 'package:quran_app/core/widgets/indicators/app_badge.dart';
 import 'package:quran_app/core/widgets/indicators/app_progress_bar.dart';
 import 'package:quran_app/core/widgets/responsive_padding.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 class HomePageProgressCard extends StatelessWidget {
   const HomePageProgressCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return AppCard(
       backgroundColor: AppColors.nobleGreen,
       padding: EdgeInsets.zero,
@@ -48,14 +50,14 @@ class HomePageProgressCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppBadge(
-                  label: 'Continue Reading',
+                  label: localizations.progressBadge,
                   variant: AppBadgeVariant.premium,
                 ),
 
                 SizedBox(height: AppSpacing.lg),
 
                 Text(
-                  'Al-Baqarah',
+                  localizations.progressSurahName,
                   style: TextStyle(
                     fontSize: AppTypography.headlineLarge.fontSize,
                     fontWeight: FontWeight.bold,
@@ -70,7 +72,7 @@ class HomePageProgressCard extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        'Ayah 142 • Juz 2',
+                        localizations.progressAyahJuz('142', '2'),
                         style: TextStyle(color: AppColors.surface),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -99,7 +101,7 @@ class HomePageProgressCard extends StatelessWidget {
                 SizedBox(height: AppSpacing.lg),
 
                 AppSecondaryButton(
-                  label: 'Read Now',
+                  label: localizations.progressReadNow,
                   textStyle: TextStyle(fontWeight: FontWeight.bold),
                   onPressed: () {},
                   fullWidth: true,

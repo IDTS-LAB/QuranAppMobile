@@ -5,6 +5,7 @@ import 'package:quran_app/core/widgets/empty/app_empty_view.dart';
 import 'package:quran_app/core/widgets/error/app_error_view.dart';
 import 'package:quran_app/core/widgets/layout/responsive_container.dart';
 import 'package:quran_app/core/widgets/loading/app_loading.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 import 'package:quran_app/features/quran/presentation/controllers/quran_views.dart';
 import 'package:quran_app/features/quran/presentation/providers/quran_providers.dart';
 
@@ -16,11 +17,12 @@ class BookmarksPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localizations = AppLocalizations.of(context);
     final AsyncValue<List<BookmarkView>> bookmarks = ref.watch(
       bookmarksControllerProvider,
     );
     return Scaffold(
-      appBar: AppBar(title: const Text('Bookmarks')),
+      appBar: AppBar(title: Text(localizations.bookmarksTitle)),
       body: ResponsiveContainer(
         fullWidth: true,
         child: switch (bookmarks) {
@@ -32,7 +34,7 @@ class BookmarksPage extends ConsumerWidget {
           ),
           AsyncData(value: final list) =>
             list.isEmpty
-                ? const AppEmptyView(message: 'No bookmarks yet')
+                ? AppEmptyView(message: localizations.bookmarksEmpty)
                 : RefreshIndicator(
                     onRefresh: () => ref
                         .read(bookmarksControllerProvider.notifier)
@@ -47,12 +49,14 @@ class BookmarksPage extends ConsumerWidget {
                           ),
                           leading: const Icon(Icons.bookmark),
                           title: Text(
-                            'Surah ${bookmark.surahNumber} · '
-                            'Ayah ${bookmark.ayahNumber}',
+                            localizations.bookmarkRow(
+                              bookmark.surahNumber,
+                              bookmark.ayahNumber,
+                            ),
                           ),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete_outline),
-                            tooltip: 'Remove bookmark',
+                            tooltip: localizations.bookmarkRemoveRowTooltip,
                             onPressed: () => ref
                                 .read(bookmarksControllerProvider.notifier)
                                 .toggle(

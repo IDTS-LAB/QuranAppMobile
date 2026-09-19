@@ -1,5 +1,3 @@
-
-
 /// Noble Forest - Premium Quranic UI Radius System
 abstract final class AppRadius {
   /// Small radius: 8px

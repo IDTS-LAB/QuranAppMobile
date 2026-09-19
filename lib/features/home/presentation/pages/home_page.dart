@@ -12,6 +12,7 @@ import 'package:quran_app/features/home/presentation/widgets/grid_menu.dart';
 import 'package:quran_app/features/home/presentation/widgets/header.dart';
 import 'package:quran_app/features/home/presentation/widgets/progress_card.dart';
 import 'package:quran_app/features/home/presentation/widgets/recent_read_card.dart';
+import 'package:quran_app/l10n/app_localizations.dart';
 
 /// Home page: constraint-based responsive layout, no fixed screen widths.
 ///
@@ -30,24 +31,29 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     final menuItems = [
       GridMenuItem(
-        label: "Read Quran",
+        title: localizations.menuReadTitle,
+        subtitle: localizations.menuReadSubtitle,
         icon: const FaIcon(FontAwesomeIcons.bookOpen),
         color: Colors.green,
       ),
       GridMenuItem(
-        label: "Listen",
+        title: localizations.menuListenTitle,
+        subtitle: localizations.menuListenSubtitle,
         icon: const FaIcon(FontAwesomeIcons.headphones),
         color: Colors.blue,
       ),
       GridMenuItem(
-        label: "Hifz Tracker",
+        title: localizations.menuHifzTitle,
+        subtitle: localizations.menuHifzSubtitle,
         icon: const FaIcon(FontAwesomeIcons.brain),
         color: Colors.orange,
       ),
       GridMenuItem(
-        label: "Search",
+        title: localizations.menuSearchTitle,
+        subtitle: localizations.menuSearchSubtitle,
         icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
         color: Colors.purple,
       ),
@@ -74,23 +80,33 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                   const SizedBox(height: AppSpacing.xl),
 
+                  AdaptiveText(
+                    localizations.homeShortcuts,
+                    style: const TextStyle(
+                      color: AppColors.nobleGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                  const SizedBox(height: AppSpacing.sm),
+
                   HomePageGridMenu(items: menuItems),
 
                   const SizedBox(height: AppSpacing.xl),
 
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AdaptiveText(
-                        "Recently Read",
-                        style: TextStyle(
+                        localizations.homeRecentlyRead,
+                        style: const TextStyle(
                           color: AppColors.nobleGreen,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       AdaptiveText(
-                        "See All",
-                        style: TextStyle(
+                        localizations.homeSeeAll,
+                        style: const TextStyle(
                           color: AppColors.nobleGold,
                           fontWeight: FontWeight.bold,
                         ),
@@ -98,7 +114,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ],
                   ),
 
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.sm),
 
                   const HomePageRecentReadCard(),
 
