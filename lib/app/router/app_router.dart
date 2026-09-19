@@ -6,6 +6,7 @@ import 'package:quran_app/features/quran/presentation/pages/bookmarks_page.dart'
 import 'package:quran_app/features/quran/presentation/pages/search_page.dart';
 import 'package:quran_app/features/quran/presentation/pages/surah_detail_page.dart';
 import 'package:quran_app/features/quran/presentation/pages/surah_list_page.dart';
+
 import 'adaptive_scaffold.dart';
 import 'route_guards.dart';
 import 'route_names.dart';
@@ -19,7 +20,7 @@ import 'route_names.dart';
 abstract final class AppRouter {
   static GoRouter create() {
     return GoRouter(
-      initialLocation: RouteNames.surahs,
+      initialLocation: RouteNames.home,
       redirect: RouteGuards.redirect,
       routes: <RouteBase>[
         StatefulShellRoute.indexedStack(

@@ -14,6 +14,9 @@ import '../../../../app/theme/app_typography.dart';
 /// - approximately 52–56px height
 /// - SemiBold label
 /// - comfortable horizontal padding
+///
+/// The [textStyle] parameter allows customization of the text appearance.
+/// If [textStyle] is null, the default style (based on the enabled state) is used.
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton({
     super.key,
@@ -26,6 +29,7 @@ class AppPrimaryButton extends StatelessWidget {
     this.height,
     this.enabled = true,
     this.loading = false,
+    this.textStyle,
   });
 
   final String label;
@@ -37,6 +41,7 @@ class AppPrimaryButton extends StatelessWidget {
   final double? height;
   final bool enabled;
   final bool loading;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +70,7 @@ class AppPrimaryButton extends StatelessWidget {
           else
             Text(
               label,
-              style: AppTypography.titleMedium.copyWith(
+              style: textStyle ?? AppTypography.titleMedium.copyWith(
                 color: AppColors.surface,
                 fontWeight: FontWeight.w600,
               ),

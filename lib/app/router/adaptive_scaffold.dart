@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quran_app/app/theme/app_spacing.dart';
 
 import 'package:quran_app/core/responsive/breakpoints.dart';
 import 'package:quran_app/core/responsive/foldable/foldable_info.dart';
 import 'package:quran_app/app/theme/app_colors.dart';
+
 import 'route_names.dart';
 
 /// Single destination entry mapping a shell branch to its tab UI.
@@ -34,8 +36,8 @@ class AdaptiveScaffold extends StatelessWidget {
   static const List<_Destination> _destinations = <_Destination>[
     _Destination(
       label: 'Home',
-      icon: FaIcon(FontAwesomeIcons.house),
-      selectedIcon: FaIcon(FontAwesomeIcons.house),
+      icon: FaIcon(FontAwesomeIcons.solidHouse),
+      selectedIcon: FaIcon(FontAwesomeIcons.solidHouse),
     ),
     _Destination(
       label: 'Quran',
@@ -214,8 +216,7 @@ class _ExpandedShell extends StatelessWidget {
             child: NavigationRail(
               selectedIndex: selectedIndex,
               onDestinationSelected: onSelect,
-              extended: true,
-              minExtendedWidth: 280,
+              extended: false,
               selectedIconTheme: IconThemeData(color: AppColors.nobleGreen),
               unselectedIconTheme: IconThemeData(color: AppColors.disabled),
               selectedLabelTextStyle: TextStyle(color: AppColors.nobleGreen),
@@ -228,6 +229,7 @@ class _ExpandedShell extends StatelessWidget {
                     icon: destination.icon,
                     selectedIcon: destination.selectedIcon,
                     label: Text(destination.label),
+                    padding: EdgeInsets.only(bottom: AppSpacing.md),
                   ),
               ],
             ),

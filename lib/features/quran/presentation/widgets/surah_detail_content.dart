@@ -10,6 +10,7 @@ import 'package:quran_app/core/widgets/loading/app_loading.dart';
 import 'package:quran_app/features/quran/domain/entities/ayah.dart';
 import 'package:quran_app/features/quran/presentation/controllers/quran_views.dart';
 import 'package:quran_app/features/quran/presentation/providers/quran_providers.dart';
+
 import 'ayah_tile.dart';
 import 'resume_banner.dart';
 

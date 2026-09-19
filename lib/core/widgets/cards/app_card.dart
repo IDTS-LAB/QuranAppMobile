@@ -13,6 +13,9 @@ import 'package:quran_app/app/theme/app_spacing.dart';
 /// - very subtle shadow
 /// - approximately 32px radius
 /// - generous padding
+///
+/// The [clipBehavior] property controls how the card's content and decoration
+/// (including border and shadow) are clipped. Defaults to [Clip.hardEdge].
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
@@ -24,6 +27,7 @@ class AppCard extends StatelessWidget {
     this.border,
     this.shadow,
     this.onTap,
+    this.clipBehavior,
   });
 
   final Widget? child;
@@ -34,11 +38,13 @@ class AppCard extends StatelessWidget {
   final BoxBorder? border;
   final List<BoxShadow>? shadow;
   final VoidCallback? onTap;
+  final Clip? clipBehavior;
 
   @override
   Widget build(BuildContext context) {
     final Widget card = Container(
       width: double.infinity,
+      clipBehavior: clipBehavior ?? Clip.hardEdge,
       decoration: BoxDecoration(
         color: backgroundColor ?? AppColors.surface,
         borderRadius: borderRadius ?? BorderRadius.circular(AppRadius.lg),

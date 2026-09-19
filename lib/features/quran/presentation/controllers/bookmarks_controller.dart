@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:quran_app/core/result/result.dart';
 import 'package:quran_app/features/quran/presentation/providers/quran_providers.dart';
+
 import 'quran_views.dart';
 
 final class BookmarksController extends AsyncNotifier<List<BookmarkView>> {

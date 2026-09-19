@@ -13,6 +13,9 @@ import '../../../../app/theme/app_typography.dart';
 /// - subtle border
 /// - 16px radius
 /// - same visual height as primary
+///
+/// The [textStyle] parameter allows customization of the text appearance.
+/// If [textStyle] is null, the default style (based on the enabled state) is used.
 class AppSecondaryButton extends StatelessWidget {
   const AppSecondaryButton({
     super.key,
@@ -25,6 +28,7 @@ class AppSecondaryButton extends StatelessWidget {
     this.height,
     this.enabled = true,
     this.loading = false,
+    this.textStyle,
   });
 
   final String label;
@@ -36,6 +40,7 @@ class AppSecondaryButton extends StatelessWidget {
   final double? height;
   final bool enabled;
   final bool loading;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +69,12 @@ class AppSecondaryButton extends StatelessWidget {
           else
             Text(
               label,
-              style: AppTypography.titleMedium.copyWith(
-                color: AppColors.nobleGreen,
-                fontWeight: FontWeight.w600,
-              ),
+              style:
+                  textStyle ??
+                  AppTypography.titleMedium.copyWith(
+                    color: AppColors.nobleGreen,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
           if (trailingIcon != null) ...[
             const SizedBox(width: AppSpacing.sm),
@@ -85,6 +92,9 @@ class AppSecondaryButton extends StatelessWidget {
           foregroundColor: isEnabled
               ? AppColors.nobleGreen
               : AppColors.disabled,
+          backgroundColor: isEnabled
+              ? AppColors.surface
+              : AppColors.disabled.withValues(alpha: 0.1),
           side: BorderSide(
             color: isEnabled ? AppColors.nobleGreen : AppColors.disabled,
             width: 1.5,

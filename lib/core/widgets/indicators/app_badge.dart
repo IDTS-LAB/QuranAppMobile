@@ -5,6 +5,10 @@ import '../../../../app/theme/app_radius.dart';
 import '../../../../app/theme/app_spacing.dart';
 
 /// Noble Forest - Premium Quranic UI Badge Component
+///
+/// Displays a badge with a label and a variant-based background color.
+/// The [textStyle] parameter allows customization of the text appearance.
+/// If [textStyle] is null, the default style (based on the variant) is used.
 enum AppBadgeVariant { tag, premium, success, neutral }
 
 class AppBadge extends StatelessWidget {
@@ -12,10 +16,12 @@ class AppBadge extends StatelessWidget {
     super.key,
     required this.label,
     this.variant = AppBadgeVariant.tag,
+    this.textStyle,
   });
 
   final String label;
   final AppBadgeVariant variant;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +47,13 @@ class AppBadge extends StatelessWidget {
         break;
     }
 
+    final TextStyle effectiveTextStyle = textStyle ?? TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w600,
+      color: textColor,
+      letterSpacing: 0.5,
+    );
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
@@ -52,12 +65,7 @@ class AppBadge extends StatelessWidget {
       ),
       child: Text(
         label.toUpperCase(),
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: textColor,
-          letterSpacing: 0.5,
-        ),
+        style: effectiveTextStyle,
       ),
     );
   }
