@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quran_app/core/widgets/typography/quran_text.dart';
 
 import 'package:quran_app/app/theme/app_spacing.dart';
+import 'package:quran_app/app/theme/app_typography.dart';
 import 'package:quran_app/core/widgets/cards/app_card.dart';
 import 'package:quran_app/core/widgets/buttons/app_icon_button.dart';
 import 'package:quran_app/features/quran/domain/entities/ayah.dart';
@@ -12,7 +13,11 @@ import 'package:quran_app/features/quran/domain/entities/ayah.dart';
 /// and forwards user actions via [onBookmark]. Reports visibility via
 /// [onVisible] (fired once post-frame) so pages can persist the reading
 /// position. No data access or business logic inside.
+///
+/// Padding comes from [AppCard] (no double-wrapping); long translations
+/// wrap naturally; the footer row keeps the bookmark action reachable.
 class AyahTile extends StatefulWidget {
+  /// Creates an ayah tile.
   const AyahTile({
     super.key,
     required this.ayah,
@@ -21,9 +26,16 @@ class AyahTile extends StatefulWidget {
     this.onVisible,
   });
 
+  /// Ayah entity to render.
   final Ayah ayah;
+
+  /// Whether the ayah is bookmarked.
   final bool bookmarked;
+
+  /// Bookmark toggle handler.
   final VoidCallback onBookmark;
+
+  /// Visibility callback for reading-position persistence.
   final ValueChanged<Ayah>? onVisible;
 
   @override
@@ -47,36 +59,43 @@ class _AyahTileState extends State<AyahTile> {
   @override
   Widget build(BuildContext context) {
     return AppCard(
-      child: Padding(
-        padding: EdgeInsets.all(AppSpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-QuranText(
-               text: widget.ayah.arabicText,
-               size: QuranTextSize.medium,
-               textAlign: TextAlign.right,
-             ),
-            if (widget.ayah.translation != null) ...<Widget>[
-              SizedBox(height: AppSpacing.sm),
-              Text(widget.ayah.translation ?? ''),
-            ],
-            SizedBox(height: AppSpacing.sm),
-            Row(
-              children: <Widget>[
-                Text('Ayah ${widget.ayah.numberInSurah}'),
-                const Spacer(),
-                AppIconButton(
-                  icon: Icon(
-                    widget.bookmarked ? Icons.bookmark : Icons.bookmark_outline,
-                  ),
-                  tooltip: widget.bookmarked ? 'Remove bookmark' : 'Bookmark',
-                  onPressed: widget.onBookmark,
-                ),
-              ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          QuranText(
+            text: widget.ayah.arabicText,
+            size: QuranTextSize.medium,
+            textAlign: TextAlign.right,
+          ),
+          if (widget.ayah.translation != null) ...<Widget>[
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              widget.ayah.translation ?? '',
+              style: AppTypography.bodyMedium,
             ),
           ],
-        ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: <Widget>[
+              Flexible(
+                child: Text(
+                  'Ayah ${widget.ayah.numberInSurah}',
+                  style: AppTypography.labelLarge,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const Spacer(),
+              AppIconButton(
+                icon: Icon(
+                  widget.bookmarked ? Icons.bookmark : Icons.bookmark_outline,
+                ),
+                tooltip: widget.bookmarked ? 'Remove bookmark' : 'Bookmark',
+                onPressed: widget.onBookmark,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

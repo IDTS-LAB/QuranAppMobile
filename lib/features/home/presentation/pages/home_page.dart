@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:quran_app/app/theme/app_colors.dart';
 import 'package:quran_app/app/theme/app_spacing.dart';
-import 'package:quran_app/core/widgets/responsive_padding.dart';
+import 'package:quran_app/core/widgets/layout/app_safe_area.dart';
+import 'package:quran_app/core/widgets/layout/responsive_container.dart';
+import 'package:quran_app/core/widgets/layout/responsive_flex.dart';
 import 'package:quran_app/core/widgets/typography/adaptive_text.dart';
 import 'package:quran_app/features/home/presentation/widgets/goal_card.dart';
 import 'package:quran_app/features/home/presentation/widgets/grid_menu.dart';
@@ -12,7 +13,12 @@ import 'package:quran_app/features/home/presentation/widgets/header.dart';
 import 'package:quran_app/features/home/presentation/widgets/progress_card.dart';
 import 'package:quran_app/features/home/presentation/widgets/recent_read_card.dart';
 
+/// Home page: constraint-based responsive layout, no fixed screen widths.
+///
+/// Compact: single column. Expanded+: progress/goal side-by-side via
+/// [ResponsiveFlex]; content width constrained by [ResponsiveContainer].
 class HomePage extends ConsumerStatefulWidget {
+  /// Creates the home page.
   const HomePage({super.key});
 
   @override
@@ -24,58 +30,55 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Size mediaSize = MediaQuery.sizeOf(context);
-
     final menuItems = [
       GridMenuItem(
         label: "Read Quran",
-        icon: FaIcon(FontAwesomeIcons.bookOpen),
+        icon: const FaIcon(FontAwesomeIcons.bookOpen),
         color: Colors.green,
       ),
       GridMenuItem(
         label: "Listen",
-        icon: FaIcon(FontAwesomeIcons.headphones),
+        icon: const FaIcon(FontAwesomeIcons.headphones),
         color: Colors.blue,
       ),
       GridMenuItem(
         label: "Hifz Tracker",
-        icon: FaIcon(FontAwesomeIcons.brain),
+        icon: const FaIcon(FontAwesomeIcons.brain),
         color: Colors.orange,
       ),
       GridMenuItem(
         label: "Search",
-        icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
+        icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
         color: Colors.purple,
       ),
     ];
 
     return Scaffold(
-      body: SafeArea(
+      body: AppSafeArea(
+        bottom: false,
         child: RefreshIndicator(
           onRefresh: _onRefresh,
           child: SingleChildScrollView(
-            child: ResponsivePadding(
-              width: mediaSize.width,
+            child: ResponsiveContainer(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HomePageHeader(name: "Ahmed Razak", profilePhoto: null),
+                  const HomePageHeader(name: "Ahmed Razak", profilePhoto: null),
 
-                  SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.xl),
 
-                  HomePageProgressCard(),
+                  const ResponsiveFlex(
+                    spacing: AppSpacing.xl,
+                    children: [HomePageProgressCard(), HomePageGoalCard()],
+                  ),
 
-                  SizedBox(height: AppSpacing.xl),
-
-                  HomePageGoalCard(),
-
-                  SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.xl),
 
                   HomePageGridMenu(items: menuItems),
 
-                  SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: AppSpacing.xl),
 
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AdaptiveText(
@@ -95,9 +98,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ],
                   ),
 
-                  SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.md),
 
-                  HomePageRecentReadCard(),
+                  const HomePageRecentReadCard(),
                 ],
               ),
             ),

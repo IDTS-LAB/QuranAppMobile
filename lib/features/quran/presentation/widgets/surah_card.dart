@@ -10,7 +10,11 @@ import 'package:quran_app/features/quran/domain/entities/surah.dart';
 ///
 /// Pure presentation: renders the [surah] entity and forwards taps via
 /// [onTap]. No navigation, data access, or business logic inside.
+///
+/// Long names ellipsize instead of overflowing narrow (folded-phone)
+/// windows; the Arabic trailing is width-constrained for the same reason.
 class SurahCard extends StatelessWidget {
+  /// Creates a surah list card.
   const SurahCard({
     super.key,
     required this.surah,
@@ -18,29 +22,56 @@ class SurahCard extends StatelessWidget {
     this.selected = false,
   });
 
+  /// Surah entity to render.
   final Surah surah;
+
+  /// Tap handler.
   final VoidCallback onTap;
+
+  /// Highlights the card in two-pane selection contexts.
   final bool selected;
 
   @override
   Widget build(BuildContext context) {
     return AppCard(
-      padding: EdgeInsets.all(AppSpacing.sm),
-      child: InkWell(
-        onTap: onTap,
-        splashColor: AppColors.nobleGreen.withValues(alpha: 0.2),
-        child: ListTile(
-          onTap: null,
-          selected: selected,
-          leading: CircleAvatar(child: Text('${surah.number}')),
-          title: Text(surah.englishName),
-          subtitle: Text('${surah.englishMeaning} · ${surah.ayahCount} ayahs'),
-          trailing: Padding(
-            padding: EdgeInsets.only(left: AppSpacing.sm),
-            child: Text(
-              surah.arabicName,
-              style: AppTypography.arabicSmall,
-              textDirection: TextDirection.rtl,
+      padding: const EdgeInsets.all(AppSpacing.sm),
+      onTap: onTap,
+      child: Semantics(
+        button: true,
+        selected: selected,
+        label:
+            '${surah.englishName}, ${surah.englishMeaning}, '
+            '${surah.ayahCount} ayahs',
+        // Transparent material so the ListTile ink/selection paints above
+        // the card decoration instead of being hidden beneath it.
+        child: Material(
+          type: MaterialType.transparency,
+          child: ListTile(
+            selected: selected,
+            selectedTileColor: AppColors.nobleGreen.withValues(alpha: 0.08),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.sm,
+            ),
+            leading: CircleAvatar(child: Text('${surah.number}')),
+            title: Text(
+              surah.englishName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              '${surah.englishMeaning} · ${surah.ayahCount} ayahs',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 120),
+              child: Text(
+                surah.arabicName,
+                style: AppTypography.arabicSmall,
+                textDirection: TextDirection.rtl,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
         ),

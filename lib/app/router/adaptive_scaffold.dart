@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:quran_app/app/theme/app_colors.dart';
 import 'package:quran_app/app/theme/app_spacing.dart';
 
 import 'package:quran_app/core/responsive/breakpoints.dart';
-import 'package:quran_app/core/responsive/foldable/foldable_info.dart';
-import 'package:quran_app/app/theme/app_colors.dart';
+import 'package:quran_app/core/responsive/foldable/fold_info.dart';
 
-import 'route_names.dart';
+/// Navigation type override for [AdaptiveScaffold].
+enum NavigationType {
+  /// Bottom bar / rail / sidebar chosen from width + fold state.
+  automatic,
+
+  /// Force bottom navigation.
+  bottomBar,
+
+  /// Force navigation rail.
+  rail,
+
+  /// Force extended sidebar.
+  sidebar,
+}
 
 /// Single destination entry mapping a shell branch to its tab UI.
 class _Destination {
@@ -24,14 +37,33 @@ class _Destination {
 
 /// App shell with adaptive navigation.
 ///
-/// Compact widths use a [NavigationBar]; medium widths a [NavigationRail];
-/// expanded widths a sidebar plus two-pane content. The selected index is
-/// derived from [GoRouterState.uri] via [RouteNames.locationToIndex], and
-/// taps navigate via the shell branches — no hard-coded route strings.
+/// | Layout    | Navigation                              |
+/// | --------- | --------------------------------------- |
+/// | Compact   | Bottom navigation                       |
+/// | Medium    | Navigation rail                         |
+/// | Expanded  | Navigation rail                         |
+/// | Large+    | Extended navigation rail (sidebar)      |
+/// | Dual-screen (separating hinge) | Rail/sidebar, content clear of hinge |
+/// | Half-open (horizontal hinge)   | Content stacked above, nav usable below |
+///
+/// The selected index comes from the shell's `currentIndex` (synced with
+/// GoRouter); taps navigate via shell branches — no hard-coded strings.
+///
+/// Safe areas: the scaffold owns system insets ([SafeArea] per shell);
+/// keyboard insets are preserved (no `resizeToAvoidBottomInset: false`).
 class AdaptiveScaffold extends StatelessWidget {
-  const AdaptiveScaffold({super.key, required this.navigationShell});
+  /// Creates the adaptive app shell around [navigationShell].
+  const AdaptiveScaffold({
+    super.key,
+    required this.navigationShell,
+    this.navigationType = NavigationType.automatic,
+  });
 
+  /// GoRouter stateful shell rendered as the body.
   final StatefulNavigationShell navigationShell;
+
+  /// Navigation override (default adapts to width + fold state).
+  final NavigationType navigationType;
 
   static const List<_Destination> _destinations = <_Destination>[
     _Destination(
@@ -72,21 +104,70 @@ class AdaptiveScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final FoldableInfo foldable = FoldableInfo.fromContext(context);
-        final double width = constraints.maxWidth;
-        if (Breakpoints.isExpanded(width) || foldable.isDualScreen) {
-          return _ExpandedShell(
+        final FoldInfo foldable = FoldInfo.fromContext(context);
+        final breakpoint = Breakpoints.breakpointOf(constraints.maxWidth);
+        final type = _resolveType(breakpoint, foldable);
+
+        // Half-open tabletop: keep nav interactive below the hinge while
+        // content uses the upper region.
+        if (foldable.posture == FoldPosture.halfOpened &&
+            foldable.hingeAxis == Axis.horizontal &&
+            navigationType == NavigationType.automatic) {
+          return _TabletopShell(
             onSelect: _goToBranch,
-            hingeWidth: foldable.hingeBounds?.width ?? 0,
+            hingeHeight: foldable.hingeBounds?.height ?? 0,
             child: navigationShell,
           );
         }
-        if (Breakpoints.isMedium(width)) {
-          return _MediumShell(onSelect: _goToBranch, child: navigationShell);
+
+        switch (type) {
+          case NavigationType.sidebar:
+            return _ExpandedShell(
+              onSelect: _goToBranch,
+              hingeWidth: foldable.hingeBounds?.width ?? 0,
+              extended: true,
+              child: navigationShell,
+            );
+          case NavigationType.rail:
+            if (breakpoint == AppBreakpoint.medium) {
+              return _MediumShell(
+                onSelect: _goToBranch,
+                child: navigationShell,
+              );
+            }
+            return _ExpandedShell(
+              onSelect: _goToBranch,
+              hingeWidth: foldable.hingeBounds?.width ?? 0,
+              extended: false,
+              child: navigationShell,
+            );
+          case NavigationType.bottomBar:
+          case NavigationType.automatic:
+            return _CompactShell(onSelect: _goToBranch, child: navigationShell);
         }
-        return _CompactShell(onSelect: _goToBranch, child: navigationShell);
       },
     );
+  }
+
+  NavigationType _resolveType(AppBreakpoint bp, FoldInfo fold) {
+    if (navigationType != NavigationType.automatic) return navigationType;
+    // Spanned dual-screen always gets rail/sidebar (never bottom bar under
+    // a hinge), even at narrower widths.
+    if (fold.isSpanned || fold.isSeparating) {
+      return bp.index >= AppBreakpoint.large.index
+          ? NavigationType.sidebar
+          : NavigationType.rail;
+    }
+    switch (bp) {
+      case AppBreakpoint.compact:
+        return NavigationType.bottomBar;
+      case AppBreakpoint.medium:
+      case AppBreakpoint.expanded:
+        return NavigationType.rail;
+      case AppBreakpoint.large:
+      case AppBreakpoint.extraLarge:
+        return NavigationType.sidebar;
+    }
   }
 }
 
@@ -102,40 +183,43 @@ class _CompactShell extends StatelessWidget {
     // state tracking across device modes and orientations
     final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
     return Scaffold(
-      body: child,
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((
-            Set<WidgetState> states,
-          ) {
-            if (states.contains(WidgetState.selected)) {
-              return IconThemeData(color: AppColors.nobleGreen);
-            }
-            return IconThemeData(color: AppColors.disabled);
-          }),
-          labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((
-            Set<WidgetState> states,
-          ) {
-            if (states.contains(WidgetState.selected)) {
-              return TextStyle(color: AppColors.nobleGreen);
-            }
-            return TextStyle(color: AppColors.disabled);
-          }),
-          indicatorColor: Colors.transparent,
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
-        ),
-        child: NavigationBar(
-          selectedIndex: selectedIndex,
-          onDestinationSelected: onSelect,
-          destinations: <Widget>[
-            for (final _Destination destination
-                in AdaptiveScaffold._destinations)
-              NavigationDestination(
-                icon: destination.icon,
-                selectedIcon: destination.selectedIcon,
-                label: destination.label,
-              ),
-          ],
+      body: SafeArea(bottom: false, child: child),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: NavigationBarTheme(
+          data: NavigationBarThemeData(
+            iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((
+              Set<WidgetState> states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return const IconThemeData(color: AppColors.nobleGreen);
+              }
+              return const IconThemeData(color: AppColors.disabled);
+            }),
+            labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((
+              Set<WidgetState> states,
+            ) {
+              if (states.contains(WidgetState.selected)) {
+                return const TextStyle(color: AppColors.nobleGreen);
+              }
+              return const TextStyle(color: AppColors.disabled);
+            }),
+            indicatorColor: Colors.transparent,
+            overlayColor: WidgetStateProperty.all(Colors.transparent),
+          ),
+          child: NavigationBar(
+            selectedIndex: selectedIndex,
+            onDestinationSelected: onSelect,
+            destinations: <Widget>[
+              for (final _Destination destination
+                  in AdaptiveScaffold._destinations)
+                NavigationDestination(
+                  icon: destination.icon,
+                  selectedIcon: destination.selectedIcon,
+                  label: destination.label,
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -154,36 +238,46 @@ class _MediumShell extends StatelessWidget {
     // state tracking across device modes and orientations
     final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
     return Scaffold(
-      body: Row(
-        children: <Widget>[
-          Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme: Theme.of(context).colorScheme
-                  .copyWith(primary: Colors.transparent),
+      body: SafeArea(
+        child: Row(
+          children: <Widget>[
+            Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: Theme.of(context).colorScheme
+                    .copyWith(primary: Colors.transparent),
+              ),
+              child: NavigationRail(
+                selectedIndex: selectedIndex,
+                onDestinationSelected: onSelect,
+                labelType: NavigationRailLabelType.all,
+                selectedIconTheme: const IconThemeData(
+                  color: AppColors.nobleGreen,
+                ),
+                unselectedIconTheme: const IconThemeData(
+                  color: AppColors.disabled,
+                ),
+                selectedLabelTextStyle: const TextStyle(
+                  color: AppColors.nobleGreen,
+                ),
+                unselectedLabelTextStyle: const TextStyle(
+                  color: AppColors.disabled,
+                ),
+                useIndicator: false,
+                destinations: <NavigationRailDestination>[
+                  for (final _Destination destination
+                      in AdaptiveScaffold._destinations)
+                    NavigationRailDestination(
+                      icon: destination.icon,
+                      selectedIcon: destination.selectedIcon,
+                      label: Text(destination.label),
+                    ),
+                ],
+              ),
             ),
-            child: NavigationRail(
-              selectedIndex: selectedIndex,
-              onDestinationSelected: onSelect,
-              labelType: NavigationRailLabelType.all,
-              selectedIconTheme: IconThemeData(color: AppColors.nobleGreen),
-              unselectedIconTheme: IconThemeData(color: AppColors.disabled),
-              selectedLabelTextStyle: TextStyle(color: AppColors.nobleGreen),
-              unselectedLabelTextStyle: TextStyle(color: AppColors.disabled),
-              useIndicator: false,
-              destinations: <NavigationRailDestination>[
-                for (final _Destination destination
-                    in AdaptiveScaffold._destinations)
-                  NavigationRailDestination(
-                    icon: destination.icon,
-                    selectedIcon: destination.selectedIcon,
-                    label: Text(destination.label),
-                  ),
-              ],
-            ),
-          ),
-          const VerticalDivider(width: 1),
-          Expanded(child: child),
-        ],
+            const VerticalDivider(width: 1),
+            Expanded(child: child),
+          ],
+        ),
       ),
     );
   }
@@ -194,11 +288,15 @@ class _ExpandedShell extends StatelessWidget {
     required this.onSelect,
     required this.hingeWidth,
     required this.child,
+    this.extended = false,
   });
 
   final ValueChanged<int> onSelect;
   final double hingeWidth;
   final Widget child;
+
+  /// Extended rail (sidebar) on large/extraLarge windows.
+  final bool extended;
 
   @override
   Widget build(BuildContext context) {
@@ -206,39 +304,95 @@ class _ExpandedShell extends StatelessWidget {
     // state tracking across device modes and orientations
     final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
     return Scaffold(
-      body: Row(
-        children: <Widget>[
-          Theme(
-            data: Theme.of(context).copyWith(
-              colorScheme: Theme.of(context).colorScheme
-                  .copyWith(primary: Colors.transparent),
+      body: SafeArea(
+        child: Row(
+          children: <Widget>[
+            Theme(
+              data: Theme.of(context).copyWith(
+                colorScheme: Theme.of(context).colorScheme
+                    .copyWith(primary: Colors.transparent),
+              ),
+              child: NavigationRail(
+                selectedIndex: selectedIndex,
+                onDestinationSelected: onSelect,
+                extended: extended,
+                minExtendedWidth: 220,
+                selectedIconTheme: const IconThemeData(
+                  color: AppColors.nobleGreen,
+                ),
+                unselectedIconTheme: const IconThemeData(
+                  color: AppColors.disabled,
+                ),
+                selectedLabelTextStyle: const TextStyle(
+                  color: AppColors.nobleGreen,
+                ),
+                unselectedLabelTextStyle: const TextStyle(
+                  color: AppColors.disabled,
+                ),
+                useIndicator: false,
+                destinations: <NavigationRailDestination>[
+                  for (final _Destination destination
+                      in AdaptiveScaffold._destinations)
+                    NavigationRailDestination(
+                      icon: destination.icon,
+                      selectedIcon: destination.selectedIcon,
+                      label: Text(destination.label),
+                      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                    ),
+                ],
+              ),
             ),
-            child: NavigationRail(
+            const VerticalDivider(width: 1),
+            // Keeps content clear of a vertical hinge on dual-screen devices.
+            if (hingeWidth > 0) SizedBox(width: hingeWidth),
+            Expanded(child: child),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Half-open tabletop: content above the hinge, navigation below.
+///
+/// Guarantees navigation stays clickable — no overlays above the bar, no
+/// absorbed pointers; both regions rebuild on posture changes via the
+/// parent `LayoutBuilder` + `MediaQuery` subscription.
+class _TabletopShell extends StatelessWidget {
+  const _TabletopShell({
+    required this.onSelect,
+    required this.hingeHeight,
+    required this.child,
+  });
+
+  final ValueChanged<int> onSelect;
+  final double hingeHeight;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final int selectedIndex = (child as StatefulNavigationShell).currentIndex;
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(child: child),
+            if (hingeHeight > 0) SizedBox(height: hingeHeight),
+            NavigationBar(
               selectedIndex: selectedIndex,
               onDestinationSelected: onSelect,
-              extended: false,
-              selectedIconTheme: IconThemeData(color: AppColors.nobleGreen),
-              unselectedIconTheme: IconThemeData(color: AppColors.disabled),
-              selectedLabelTextStyle: TextStyle(color: AppColors.nobleGreen),
-              unselectedLabelTextStyle: TextStyle(color: AppColors.disabled),
-              useIndicator: false,
-              destinations: <NavigationRailDestination>[
+              destinations: <Widget>[
                 for (final _Destination destination
                     in AdaptiveScaffold._destinations)
-                  NavigationRailDestination(
+                  NavigationDestination(
                     icon: destination.icon,
                     selectedIcon: destination.selectedIcon,
-                    label: Text(destination.label),
-                    padding: EdgeInsets.only(bottom: AppSpacing.md),
+                    label: destination.label,
                   ),
               ],
             ),
-          ),
-          const VerticalDivider(width: 1),
-          // Keeps content clear of a vertical hinge on dual-screen devices.
-          if (hingeWidth > 0) SizedBox(width: hingeWidth),
-          Expanded(child: child),
-        ],
+          ],
+        ),
       ),
     );
   }

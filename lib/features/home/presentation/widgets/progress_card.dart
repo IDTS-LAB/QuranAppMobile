@@ -10,7 +10,7 @@ import 'package:quran_app/core/widgets/indicators/app_progress_bar.dart';
 import 'package:quran_app/core/widgets/responsive_padding.dart';
 
 class HomePageProgressCard extends StatelessWidget {
-  const new({super.key});
+  const HomePageProgressCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +61,20 @@ class HomePageProgressCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: AppColors.surface,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Ayah 142 • Juz 2',
-                      style: TextStyle(color: AppColors.surface),
+                    Flexible(
+                      child: Text(
+                        'Ayah 142 • Juz 2',
+                        style: TextStyle(color: AppColors.surface),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Text(
                       '42%',

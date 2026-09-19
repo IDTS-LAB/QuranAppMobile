@@ -54,19 +54,17 @@ class QuranText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Determine base style from provided style or default
-    final TextStyle baseStyle = style ?? TextStyle();
+    // Determine base style from provided style or default.
+    // Semantic sizes only — no screen-width scaling (readability stays
+    // consistent; the framework applies the user's text-scaler).
+    final TextStyle baseStyle = style ?? const TextStyle();
 
-    // Determine base font size for calculation
     double baseFontSize;
     if (fontSize != null) {
-      // Explicit font size provided - use as-is (non-adaptive)
       baseFontSize = fontSize!;
     } else if (baseStyle.fontSize != null) {
-      // Font size provided in style - use as-is (non-adaptive)
       baseFontSize = baseStyle.fontSize!;
     } else {
-      // No font size specified - use size enum to get base size for adaptive scaling
       switch (size) {
         case QuranTextSize.large:
           baseFontSize = 24.0;
@@ -80,19 +78,9 @@ class QuranText extends StatelessWidget {
       }
     }
 
-    // Calculate adaptive scale factor based on screen width and user accessibility settings
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double widthScale = (screenWidth / 360.0).clamp(
-      0.8,
-      2.0,
-    ); // Base width 360dp
-    final double textScale = MediaQuery.of(context).textScaler.scale(1.0);
-    final double combinedScale = (widthScale * textScale).clamp(0.8, 2.0);
-    final double finalFontSize = baseFontSize * combinedScale;
-
-    // Create final text style by merging base style with adaptive font size and other parameters
+    // Create final text style by merging base style with font size and other parameters
     final TextStyle finalStyle = baseStyle.copyWith(
-      fontSize: finalFontSize,
+      fontSize: baseFontSize,
       height: lineHeight ?? baseStyle.height ?? 2.2,
       color: color ?? baseStyle.color ?? AppColors.textPrimary,
     );

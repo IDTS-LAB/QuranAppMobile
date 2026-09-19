@@ -8,7 +8,7 @@ import 'package:quran_app/core/widgets/responsive_padding.dart';
 import 'package:quran_app/core/widgets/typography/adaptive_text.dart';
 
 class HomePageRecentReadCard extends StatelessWidget {
-  const new({super.key});
+  const HomePageRecentReadCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,42 +24,46 @@ class HomePageRecentReadCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // surah and ayah section
-            Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(AppSpacing.md),
-                  decoration: BoxDecoration(
-                    color: AppColors.mutedSurface,
-                    borderRadius: BorderRadius.circular(AppSpacing.md),
-                  ),
-                  child: AdaptiveText(
-                    "18",
-                    style: TextStyle(
-                      color: AppColors.nobleGreen,
-                      fontWeight: FontWeight.bold,
+            Expanded(
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: AppColors.mutedSurface,
+                      borderRadius: BorderRadius.circular(AppSpacing.md),
                     ),
-                  ),
-                ),
-
-                SizedBox(width: AppSpacing.md),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AdaptiveText(
-                      "Al-Kahf",
+                    child: AdaptiveText(
+                      "18",
                       style: TextStyle(
-                        color: AppColors.textPrimary,
+                        color: AppColors.nobleGreen,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    AdaptiveText(
-                      "Ayah 10 • Juz 15",
-                      style: TextStyle(color: AppColors.textSecondary),
+                  ),
+
+                  SizedBox(width: AppSpacing.md),
+
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AdaptiveText(
+                          "Al-Kahf",
+                          style: TextStyle(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        AdaptiveText(
+                          "Ayah 10 • Juz 15",
+                          style: TextStyle(color: AppColors.textSecondary),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
 
             AppIconButton(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_radius.dart';
 import '../../../../app/theme/app_spacing.dart';
+import '../../../../app/theme/app_typography.dart';
 
 /// Noble Forest - Premium Quranic UI Badge Component
 ///
@@ -47,15 +48,15 @@ class AppBadge extends StatelessWidget {
         break;
     }
 
-    final TextStyle effectiveTextStyle = textStyle ?? TextStyle(
-      fontSize: 11,
-      fontWeight: FontWeight.w600,
-      color: textColor,
-      letterSpacing: 0.5,
-    );
+    final TextStyle effectiveTextStyle =
+        textStyle ??
+        AppTypography.labelSmall.copyWith(
+          fontWeight: FontWeight.w600,
+          color: textColor,
+        );
 
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.xs,
       ),
@@ -66,6 +67,8 @@ class AppBadge extends StatelessWidget {
       child: Text(
         label.toUpperCase(),
         style: effectiveTextStyle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

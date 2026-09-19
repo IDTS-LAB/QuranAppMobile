@@ -4,9 +4,12 @@ import 'package:quran_app/app/theme/app_colors.dart';
 import 'package:quran_app/app/theme/app_spacing.dart';
 import 'package:quran_app/app/theme/app_typography.dart';
 import 'package:quran_app/core/widgets/cards/app_card.dart';
+import 'package:quran_app/core/widgets/layout/responsive_grid.dart';
 import 'package:quran_app/core/widgets/typography/adaptive_text.dart';
 
+/// Menu item model for [HomePageGridMenu].
 class GridMenuItem {
+  /// Creates a menu item.
   GridMenuItem({
     required this.label,
     required this.icon,
@@ -14,43 +17,68 @@ class GridMenuItem {
     this.color = Colors.black,
   });
 
+  /// Item label.
   final String label;
+
+  /// Item icon.
   final FaIcon icon;
+
+  /// Tap handler.
   final Function()? onTap;
+
+  /// Accent color.
   final Color color;
 }
 
+/// Responsive dashboard menu: auto columns from available width.
+///
+/// Compact shows 2 columns; tablets/desktop expand to 3–4 without
+/// stretching cards. Non-scrollable (parent scrolls).
 class HomePageGridMenu extends StatelessWidget {
-  const HomePageGridMenu({super.key, required this.items});
+  /// Creates the responsive grid menu.
+  const HomePageGridMenu({
+    super.key,
+    required this.items,
+    this.minItemWidth = 160,
+    this.maxColumns = 4,
+  });
 
+  /// Menu items.
   final List<GridMenuItem> items;
+
+  /// Minimum item width driving column count.
+  final double minItemWidth;
+
+  /// Maximum columns regardless of width.
+  final int maxColumns;
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      physics: const NeverScrollableScrollPhysics(),
+    return ResponsiveGrid(
+      minItemWidth: minItemWidth,
+      maxColumns: maxColumns,
+      spacing: AppSpacing.lg,
+      childAspectRatio: 1.1,
       shrinkWrap: true,
-      crossAxisSpacing: AppSpacing.lg,
-      mainAxisSpacing: AppSpacing.lg,
-      crossAxisCount: 2,
+      physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         for (final GridMenuItem item in items)
           AppCard(
-            padding: EdgeInsets.all(0),
+            padding: EdgeInsets.zero,
             onTap: item.onTap,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding: EdgeInsets.all(AppSpacing.lg),
+                  padding: const EdgeInsets.all(AppSpacing.lg),
                   decoration: BoxDecoration(
                     color: item.color.withAlpha(25),
                     borderRadius: BorderRadius.circular(AppSpacing.md),
                   ),
-                  child: Icon(item.icon.icon, size: 45, color: item.color),
+                  child: Icon(item.icon.icon, size: 32, color: item.color),
                 ),
-                SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.md),
                 AdaptiveText(
                   item.label,
                   style: TextStyle(

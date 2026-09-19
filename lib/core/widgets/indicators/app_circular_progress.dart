@@ -12,6 +12,7 @@ class AppCircularProgress extends StatelessWidget {
     this.backgroundColor,
     this.valueColor,
     this.strokeWidth = 8,
+    this.semanticsLabel,
   });
 
   /// If null, the progress will use the largest square
@@ -31,24 +32,35 @@ class AppCircularProgress extends StatelessWidget {
 
   final double strokeWidth;
 
+  /// Screen-reader label for the progress value.
+  final String? semanticsLabel;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final resolvedSize = _resolveSize(constraints);
 
-        return SizedBox(
-          width: resolvedSize,
-          height: resolvedSize,
-          child: CustomPaint(
-            painter: _CircularProgressPainter(
-              value: value.clamp(0.0, 1.0),
-              backgroundColor:
-                  backgroundColor ?? Theme.of(context).colorScheme.surface,
-              valueColor: valueColor ?? Theme.of(context).colorScheme.primary,
-              strokeWidth: strokeWidth,
+        return Semantics(
+          label: semanticsLabel,
+          value: '${(value.clamp(0.0, 1.0) * 100).round()}%',
+          // The visual label duplicates [value]; exclude it so screen
+          // readers announce the progress exactly once.
+          child: SizedBox(
+            width: resolvedSize,
+            height: resolvedSize,
+            child: CustomPaint(
+              painter: _CircularProgressPainter(
+                value: value.clamp(0.0, 1.0),
+                backgroundColor:
+                    backgroundColor ?? Theme.of(context).colorScheme.surface,
+                valueColor: valueColor ?? Theme.of(context).colorScheme.primary,
+                strokeWidth: strokeWidth,
+              ),
+              child: Center(
+                child: ExcludeSemantics(child: Text(label, style: labelStyle)),
+              ),
             ),
-            child: Center(child: Text(label, style: labelStyle)),
           ),
         );
       },

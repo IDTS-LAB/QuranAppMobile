@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../core/widgets/empty/app_empty_view.dart';
 import '../../../../core/widgets/error/app_error_view.dart';
+import '../../../../core/widgets/layout/responsive_container.dart';
 import '../../../../core/widgets/loading/app_loading.dart';
 import '../../domain/entities/ayah.dart';
 import '../controllers/quran_views.dart';
@@ -57,22 +58,24 @@ class _SearchPageState extends ConsumerState<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Search')),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            child: TextField(
-              controller: _controller,
-              onChanged: _onChanged,
-              decoration: const InputDecoration(
-                hintText: 'Search the Quran',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+      body: ResponsiveContainer(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: TextField(
+                controller: _controller,
+                onChanged: _onChanged,
+                decoration: const InputDecoration(
+                  hintText: 'Search the Quran',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
               ),
             ),
-          ),
-          Expanded(child: _SearchResults(query: _query)),
-        ],
+            Expanded(child: _SearchResults(query: _query)),
+          ],
+        ),
       ),
     );
   }

@@ -17,6 +17,7 @@ class AppProgressBar extends StatelessWidget {
     this.backgroundColor,
     this.valueColor,
     this.height = 4,
+    this.semanticsLabel,
   });
 
   final double value; // 0.0 to 1.0
@@ -24,17 +25,24 @@ class AppProgressBar extends StatelessWidget {
   final Color? valueColor;
   final double height;
 
+  /// Screen-reader label for the progress value.
+  final String? semanticsLabel;
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: LinearProgressIndicator(
-        value: value.clamp(0.0, 1.0),
-        backgroundColor: backgroundColor ?? AppColors.mutedSurface,
-        valueColor: AlwaysStoppedAnimation<Color>(
-          valueColor ?? AppColors.nobleGreen,
+    return Semantics(
+      label: semanticsLabel,
+      value: '${(value.clamp(0.0, 1.0) * 100).round()}%',
+      child: SizedBox(
+        height: height,
+        child: LinearProgressIndicator(
+          value: value.clamp(0.0, 1.0),
+          backgroundColor: backgroundColor ?? AppColors.mutedSurface,
+          valueColor: AlwaysStoppedAnimation<Color>(
+            valueColor ?? AppColors.nobleGreen,
+          ),
+          borderRadius: BorderRadius.circular(AppRadius.pill),
         ),
-        borderRadius: BorderRadius.circular(AppRadius.pill),
       ),
     );
   }

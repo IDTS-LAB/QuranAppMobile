@@ -17,6 +17,9 @@ import '../../../../app/theme/app_typography.dart';
 ///
 /// The [textStyle] parameter allows customization of the text appearance.
 /// If [textStyle] is null, the default style (based on the enabled state) is used.
+///
+/// Long labels ellipsize instead of overflowing narrow windows; the minimum
+/// 48dp touch target is always preserved for accessibility.
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton({
     super.key,
@@ -68,11 +71,17 @@ class AppPrimaryButton extends StatelessWidget {
               ),
             )
           else
-            Text(
-              label,
-              style: textStyle ?? AppTypography.titleMedium.copyWith(
-                color: AppColors.surface,
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style:
+                    textStyle ??
+                    AppTypography.titleMedium.copyWith(
+                      color: AppColors.surface,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ),
           if (trailingIcon != null) ...[
@@ -97,6 +106,7 @@ class AppPrimaryButton extends StatelessWidget {
           ),
           elevation: 0,
           padding: EdgeInsets.zero,
+          minimumSize: const Size(48, 48),
         ),
         child: content,
       ),

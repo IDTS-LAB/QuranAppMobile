@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-/// Noble Forest - Adaptive Text Widget
+/// Theme-based text with controlled responsive adjustments.
 ///
-/// Automatically scales font size based on screen width to provide
-/// responsive typography without manual font size specification.
+/// Unlike the previous width-scaling implementation, this does NOT scale
+/// fonts by screen width (which harms readability consistency). It renders
+/// the given [style] (or ambient default) and lets the framework apply the
+/// user's text-scaler / accessibility settings. Use [ResponsiveValue] at
+/// call sites for the rare cases needing breakpoint-specific styles.
 ///
-/// Usage:
-///   AdaptiveText('Hello World', style: AppTypography.bodyMedium)
-///
-/// The text will scale proportionally to the screen width relative to
-/// a base width of 360dp (typical mobile width), with sensible clamping.
+/// ```dart
+/// AdaptiveText('Hello', style: AppTypography.bodyMedium)
+/// ```
 class AdaptiveText extends StatelessWidget {
+  /// Creates theme-based adaptive text.
   const AdaptiveText(
     this.data, {
     super.key,
@@ -20,52 +22,49 @@ class AdaptiveText extends StatelessWidget {
     this.softWrap = true,
     this.textOverflow = TextOverflow.clip,
     this.maxLines,
-    this.baseWidth = 360.0, // Reference width for scaling
+    @Deprecated('Width scaling removed; accepted for API compatibility.')
+    this.baseWidth = 360.0,
+    @Deprecated('Width scaling removed; accepted for API compatibility.')
     this.minScale = 0.8,
+    @Deprecated('Width scaling removed; accepted for API compatibility.')
     this.maxScale = 2.0,
   });
 
+  /// Text content.
   final String data;
+
+  /// Base style (theme-derived recommended).
   final TextStyle? style;
+
+  /// Horizontal alignment.
   final TextAlign? textAlign;
+
+  /// Text direction override (RTL supported via ambient directionality).
   final TextDirection? textDirection;
+
+  /// Whether text wraps.
   final bool softWrap;
+
+  /// Overflow behavior (prefer ellipsis/clip with maxLines for fixed areas).
   final TextOverflow textOverflow;
+
+  /// Maximum lines.
   final int? maxLines;
+
+  /// Legacy width-scaling params (ignored, kept for compatibility).
   final double baseWidth;
+
+  /// Legacy width-scaling params (ignored, kept for compatibility).
   final double minScale;
+
+  /// Legacy width-scaling params (ignored, kept for compatibility).
   final double maxScale;
 
   @override
   Widget build(BuildContext context) {
-    // Get base style from provided style or default text style
-    final TextStyle baseStyle = style ?? DefaultTextStyle.of(context).style;
-    final double baseFontSize = baseStyle.fontSize ?? 14.0;
-
-    // Calculate width-based scale factor
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double widthScale = (screenWidth / baseWidth).clamp(minScale, maxScale);
-
-    // Apply user's accessibility text scaling
-    final double textScale = MediaQuery.of(context).textScaler.scale(1.0);
-    final double combinedScale = (widthScale * textScale).clamp(minScale, maxScale);
-
-    // Calculate final font size
-    final double finalFontSize = baseFontSize * combinedScale;
-
-    // Create the final text style
-    final TextStyle finalStyle = baseStyle.copyWith(
-      fontSize: finalFontSize,
-      height: baseStyle.height,
-      fontWeight: baseStyle.fontWeight,
-      fontStyle: baseStyle.fontStyle,
-      letterSpacing: baseStyle.letterSpacing,
-      wordSpacing: baseStyle.wordSpacing,
-    );
-
     return Text(
       data,
-      style: finalStyle,
+      style: style,
       textAlign: textAlign,
       textDirection: textDirection,
       softWrap: softWrap,

@@ -26,12 +26,7 @@ import 'package:quran_app/app/theme/app_spacing.dart';
 /// )
 /// ```
 class AppPadding extends StatelessWidget {
-  const AppPadding({
-    super.key,
-    this.child,
-    this.padding,
-    this.width,
-  });
+  const AppPadding({super.key, this.child, this.padding, this.width});
 
   final Widget? child;
   final EdgeInsetsGeometry? padding;
@@ -48,9 +43,6 @@ class AppPadding extends StatelessWidget {
       return padded;
     }
 
-    return SizedBox(
-      width: width,
-      child: padded,
-    );
+    return SizedBox(width: width, child: padded);
   }
 }

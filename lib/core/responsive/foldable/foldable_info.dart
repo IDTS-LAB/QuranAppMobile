@@ -1,21 +1,23 @@
-import 'dart:ui' show DisplayFeature, DisplayFeatureType;
+// Backward-compatibility shim: prefer `fold_info.dart` ([FoldInfo]).
+//
+// Old imports of `foldable_info.dart` keep working. New code should use
+// [FoldInfo] / [FoldPosture] from `fold_info.dart`.
+library;
+
+export 'fold_info.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:quran_app/core/responsive/breakpoints.dart';
 
-/// Foldable posture derived from display features.
-///
-/// The exact hinge angle requires a platform sensor plugin (follow-up);
-/// until then [halfOpen] is reserved and posture is inferred from the
-/// display configuration: single compact screen reads as folded, a spanned
-/// dual-screen window reads as fully open.
+import 'fold_info.dart' as fi show FoldInfo, FoldPosture;
+
+/// Legacy posture enum (use [FoldPosture] for new code).
+@Deprecated('Use FoldPosture from fold_info.dart (adds flat/unknown).')
 enum FoldablePosture { folded, halfOpen, fullyOpen, unknown }
 
-/// Display configuration snapshot for foldable/adaptive layouts.
-///
-/// Always derive layout from this (plus [LayoutBuilder] constraints),
-/// never from `screen width == device type` assumptions.
+/// Legacy display snapshot (use [FoldInfo] for new code).
+@Deprecated('Use FoldInfo from fold_info.dart.')
 class FoldableInfo {
   const FoldableInfo({
     required this.hasHinge,
@@ -30,43 +32,33 @@ class FoldableInfo {
   /// Whether the window spans two display regions separated by a hinge.
   final bool isDualScreen;
 
-  /// Inferred posture; see [FoldablePosture] for limitations.
+  /// Inferred posture.
   final FoldablePosture posture;
 
-  /// Bounds of the hinge/fold feature, if any. Keep interactive content
-  /// clear of this region.
+  /// Bounds of the hinge/fold feature, if any.
   final Rect? hingeBounds;
 
   /// Reads display features from [MediaQuery] for [context].
   factory FoldableInfo.fromContext(BuildContext context) {
-    final List<DisplayFeature> features =
-        MediaQuery.of(context).displayFeatures;
-    Rect? hinge;
-    for (final feature in features) {
-      if (feature.type == DisplayFeatureType.hinge ||
-          feature.type == DisplayFeatureType.fold) {
-        hinge = feature.bounds;
-        break;
-      }
-    }
-    if (hinge == null) {
-      final double width = MediaQuery.of(context).size.width;
-      return FoldableInfo(
-        hasHinge: false,
-        isDualScreen: false,
-        posture: width < Breakpoints.compactMaxWidth ? FoldablePosture.folded : FoldablePosture.unknown,
-      );
-    }
-    final Size size = MediaQuery.of(context).size;
-    final bool verticalHinge = hinge.width < hinge.height;
-    final bool spansBoth = verticalHinge
-        ? hinge.left > 0 && hinge.right < size.width
-        : hinge.top > 0 && hinge.bottom < size.height;
+    final info = fi.FoldInfo.fromContext(context);
     return FoldableInfo(
-      hasHinge: true,
-      isDualScreen: spansBoth,
-      hingeBounds: hinge,
-      posture: spansBoth ? FoldablePosture.fullyOpen : FoldablePosture.folded,
+      hasHinge: info.hasHinge,
+      isDualScreen: info.isSpanned,
+      hingeBounds: info.hingeBounds,
+      posture: switch (info.posture) {
+        fi.FoldPosture.folded => FoldablePosture.folded,
+        fi.FoldPosture.halfOpened => FoldablePosture.halfOpen,
+        fi.FoldPosture.fullyOpen => FoldablePosture.fullyOpen,
+        fi.FoldPosture.flat => FoldablePosture.fullyOpen,
+        fi.FoldPosture.unknown => FoldablePosture.unknown,
+      },
     );
   }
+
+  /// Whether a hinge/fold display feature intersects the window.
+  bool get hasDisplayFeature => hasHinge;
 }
+
+/// Legacy width helper preserved for existing callers.
+@Deprecated('Use Breakpoints.breakpointOf / AppBreakpoint instead.')
+bool isFoldedCompact(double width) => width < Breakpoints.compactMaxWidth;

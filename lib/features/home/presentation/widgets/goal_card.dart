@@ -7,7 +7,7 @@ import 'package:quran_app/core/widgets/indicators/app_circular_progress.dart';
 import 'package:quran_app/core/widgets/responsive_padding.dart';
 
 class HomePageGoalCard extends StatelessWidget {
-  const new({super.key});
+  const HomePageGoalCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +22,40 @@ class HomePageGoalCard extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: AppSpacing.xs,
-              children: [
-                Text(
-                  "Daily Quran Goal",
-                  style: TextStyle(
-                    color: AppColors.nobleGreen,
-                    fontWeight: FontWeight.bold,
-                    fontSize: AppTypography.titleLarge.fontSize,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: AppSpacing.xs,
+                children: [
+                  Text(
+                    "Daily Quran Goal",
+                    style: TextStyle(
+                      color: AppColors.nobleGreen,
+                      fontWeight: FontWeight.bold,
+                      fontSize: AppTypography.titleLarge.fontSize,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                Text(
-                  "8 of 10 pages completed",
-                  style: TextStyle(color: AppColors.textSecondary),
-                ),
-                Text(
-                  "12 Day streak",
-                  style: TextStyle(
-                    color: AppColors.nobleGold,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    "8 of 10 pages completed",
+                    style: TextStyle(color: AppColors.textSecondary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                  Text(
+                    "12 Day streak",
+                    style: TextStyle(
+                      color: AppColors.nobleGold,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(width: AppSpacing.sm),
             AppCircularProgress(
               size: 70,
               label: '80%',
