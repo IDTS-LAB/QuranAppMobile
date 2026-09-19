@@ -101,6 +101,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                   const SizedBox(height: AppSpacing.md),
 
                   const HomePageRecentReadCard(),
+
+                  const SizedBox(height: AppSpacing.xl),
                 ],
               ),
             ),

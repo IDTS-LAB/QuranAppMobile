@@ -210,6 +210,8 @@ class _CompactShell extends StatelessWidget {
           child: NavigationBar(
             selectedIndex: selectedIndex,
             onDestinationSelected: onSelect,
+            // Neutral canvas (not the green-tinted M3 surfaceContainer).
+            backgroundColor: AppColors.canvas,
             destinations: <Widget>[
               for (final _Destination destination
                   in AdaptiveScaffold._destinations)
@@ -250,6 +252,8 @@ class _MediumShell extends StatelessWidget {
                 selectedIndex: selectedIndex,
                 onDestinationSelected: onSelect,
                 labelType: NavigationRailLabelType.all,
+                // Neutral canvas (not the green-tinted M3 default).
+                backgroundColor: AppColors.canvas,
                 selectedIconTheme: const IconThemeData(
                   color: AppColors.nobleGreen,
                 ),
@@ -317,6 +321,8 @@ class _ExpandedShell extends StatelessWidget {
                 onDestinationSelected: onSelect,
                 extended: extended,
                 minExtendedWidth: 220,
+                // Neutral canvas (not the green-tinted M3 default).
+                backgroundColor: AppColors.canvas,
                 selectedIconTheme: const IconThemeData(
                   color: AppColors.nobleGreen,
                 ),
@@ -381,6 +387,8 @@ class _TabletopShell extends StatelessWidget {
             NavigationBar(
               selectedIndex: selectedIndex,
               onDestinationSelected: onSelect,
+              // Neutral canvas (not the green-tinted M3 surfaceContainer).
+              backgroundColor: AppColors.canvas,
               destinations: <Widget>[
                 for (final _Destination destination
                     in AdaptiveScaffold._destinations)
